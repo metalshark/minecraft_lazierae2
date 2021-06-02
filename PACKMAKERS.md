@@ -13,11 +13,9 @@ In case you add any recipe for a machine with more than one input slot, you some
 after the reload (go back to main menu and rejoin).
 
 ## CraftTweaker
-
 The mod has native support for it, so there are some functions you can use.
 
 **Fluix Aggregator**
-
 ```zs
 // add a recipe
 <recipetype:lazierae2:fluix_aggregator>.addRecipe(String name, ItemStack output, Optional<Integer> processingTime in ticks, [Ingredient input1, Ingredient input2, Ingredient input3]);
@@ -29,7 +27,6 @@ The mod has native support for it, so there are some functions you can use.
 ```
 
 **Pulse Centrifuge**
-
 ```zs
 // add a recipe
 <recipetype:lazierae2:pulse_centrifuge>.addRecipe(String name, ItemStack output, Optional<Integer> processingTime in ticks, Ingredient input);
@@ -41,7 +38,6 @@ The mod has native support for it, so there are some functions you can use.
 ```
 
 **Crystal Energizer**
-
 ```zs
 // add a recipe
 <recipetype:lazierae2:crystal_energizer>.addRecipe(String name, ItemStack output, Optional<Integer> processingTime in ticks, Ingredient input);
@@ -53,7 +49,6 @@ The mod has native support for it, so there are some functions you can use.
 ```
 
 **Circuit Etcher**
-
 ```zs
 // add a recipe
 <recipetype:lazierae2:circuit_etcher>.addRecipe(String name, ItemStack output, Optional<Integer> processingTime in ticks, [Ingredient input1, Ingredient input2, Ingredient input3]);
@@ -65,14 +60,12 @@ The mod has native support for it, so there are some functions you can use.
 ```
 
 ## KubeJS
-
 This mod has no custom plugin for [KubeJS] but you can always use the `event.custom()` function inside the recipe event to add new recipes.<br>
 Either you always pass in the whole recipe object or you write yourself a small wrapper for that.
 
 Existing recipes you can adapt the style from are [here][recipes].
 
 **Fluix Aggregator**
-
 ```js
 event.custom({
     type: 'lazierae2:fluix_aggregator', // always needed
@@ -101,7 +94,6 @@ event.custom({
 ```
 
 **Pulse Centrifuge**
-
 ```js
 event.custom({
     type: 'lazierae2:pulse_centrifuge', // always needed
@@ -116,7 +108,6 @@ event.custom({
 ```
 
 **Crystal Energizer**
-
 ```js
 event.custom({
     type: 'lazierae2:crystal_energizer', // always needed
@@ -131,7 +122,6 @@ event.custom({
 ```
 
 **Circuit Etcher**
-
 ```js
 event.custom({
     type: 'lazierae2:circuit_etcher', // always needed
@@ -160,7 +150,6 @@ event.custom({
 ```
 
 <!-- Links -->
-
 [crafttweaker]: https://www.curseforge.com/minecraft/mc-mods/crafttweaker
 [kubejs]: https://www.curseforge.com/minecraft/mc-mods/kubejs-forge
 [recipes]: https://github.com/RLNT/minecraft_lazierae2/blob-1.16/src/generated/resources/data/lazierae2/recipes
