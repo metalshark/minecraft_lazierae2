@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lazierae2:items/carb_fluix_dust"
+  }
+}

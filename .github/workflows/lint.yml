@@ -1,0 +1,50 @@
+name: Lint
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+jobs:
+    gradle-wrapper-validation:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Gradle Wrapper Validation
+              uses: gradle/wrapper-validation-action@v1.0.3
+    checkstyle:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Checkstyle for Java
+              uses: dbelyaev/action-checkstyle@v0.3.3
+    prettier:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup Node
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '14'
+            - name: Setup NPM Cache
+              uses: actions/cache@v2.1.5
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-npm
+
+            - name: Install NPM Packages
+              run: npm ci
+
+            - name: Run Prettier Java
+              run: npx prettier --check "**/*.java"
+
+            - name: Run Prettier JSON
+              run: npx prettier --check "**/*.json"

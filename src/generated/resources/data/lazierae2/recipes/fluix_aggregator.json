@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["hhh", "rur", "lml"],
+  "key": {
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "u": {
+      "item": "lazierae2:logic_unit"
+    },
+    "l": {
+      "item": "appliedenergistics2:logic_processor"
+    },
+    "m": {
+      "item": "appliedenergistics2:condenser"
+    }
+  },
+  "result": {
+    "item": "lazierae2:fluix_aggregator"
+  }
+}

@@ -1,0 +1,207 @@
+buildscript {
+    repositories {
+        maven { url = 'https://sizableshrimp.me/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'me.sizableshrimp.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+
+group = "${mod_base_package}.${mod_id}"
+version = "${minecraft_version}-${mod_version}"
+archivesBaseName = mod_id
+
+// target java 8
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+minecraft {
+    // custom mappings hybrid of official and snapshot mappings
+    mappings channel: mappings_channel, version: mappings_version
+
+    // run configurations
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be changed as needed.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            // allow mixins from AE2
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg".toString()
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be changed as needed.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            // allow mixins from AE2
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg".toString()
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be changed as needed.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            // allow mixins from AE2
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg".toString()
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', mod_id, '--all',
+                    '--existing', file('src/main/resources').toString(),
+                    '--existing', file('src/generated/resources').toString(),
+                    '--output', file('src/generated/resources/')
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+// include datagen resources
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// external mod download locations
+repositories {
+    maven { // AE2
+        name 'modmaven'
+        url 'https://modmaven.dev/'
+        metadataSources {
+            mavenPom()
+            artifact()
+            ignoreGradleMetadataRedirection()
+        }
+    }
+    maven { // JEI
+        name 'Progwml6 maven'
+        url 'https://dvs1.progwml6.com/files/maven/'
+    }
+    maven { // CraftTweaker
+        name 'BlameJared'
+        url 'https://maven.blamejared.com'
+    }
+    maven {
+        name 'Cursemaven'
+        url 'https://www.cursemaven.com/'
+    }
+}
+
+dependencies {
+    // minecraft
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // applied energistics
+    compile fg.deobf("appeng:appliedenergistics2:${appeng_version}")
+    // just enough items
+    compileOnly fg.deobf("mezz.jei:jei-1.16.5:${jei_version}:api")
+    // craft tweaker
+    compile fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:${crt_version}")
+
+    // dev dependencies - get these from cursemaven
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3318286") // JEI - 7.7.0.99
+    runtimeOnly fg.deobf("curse.maven:top-245211:3319255") // TOP - 3.1.4
+    runtimeOnly fg.deobf("curse.maven:solargen-336538:3177119") // SolarGeneration - 2.4.0
+}
+
+// taken from Mekanism: https://github.com/mekanism/Mekanism/blob/v10.1/build.gradle#L155-L180
+def resource_targets = ["META-INF/mods.toml", "pack.mcmeta"]
+task replaceResources(type: Copy) {
+    outputs.upToDateWhen { false }
+    def spec = copySpec {
+        from(sourceSets.main.resources) {
+            include resource_targets
+            expand "project": project, "mod_id": mod_id, "mod_name": mod_name, "mod_version": mod_version,
+                    "github_user": github_user, "github_repo": github_repo, "mod_main_author": mod_main_author,
+                    "mod_authors": mod_authors, "mod_description": mod_description,
+                    "minecraft_version_range": minecraft_version_range, "forge_version_range": forge_version_range,
+                    "loader_version_range": loader_version_range, "appeng_version_range": appeng_version_range,
+                    "jei_version_range": jei_version_range, "crt_version_range": crt_version_range
+        }
+    }
+    with spec
+    into "$buildDir/resources/main/"
+    // if IntelliJ's output dir exists, copy it there as well
+    if (new File("$rootDir/out/production/${project.name}.main/").exists()) {
+        copy {
+            with spec
+            into "$rootDir/out/production/${project.name}.main/"
+        }
+    }
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    // Exclude the resource targets as we manually handle those and don't want them to invalidate our cache
+    exclude resource_targets
+    finalizedBy replaceResources
+}
+
+// fill manifest with information
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : mod_id,
+                "Specification-Vendor"    : mod_main_author,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : mod_version,
+                "Implementation-Vendor"   : mod_authors,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
