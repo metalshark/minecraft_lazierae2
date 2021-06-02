@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "appliedenergistics2:fluix_dust"
+    },
+    {
+      "item": "appliedenergistics2:fluix_dust"
+    },
+    {
+      "tag": "forge:dusts/coal"
+    },
+    {
+      "tag": "forge:dusts/coal"
+    },
+    {
+      "item": "appliedenergistics2:silicon"
+    }
+  ],
+  "result": {
+    "item": "lazierae2:carb_fluix_dust"
+  }
+}

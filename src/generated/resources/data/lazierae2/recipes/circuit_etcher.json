@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["spc", "quq", "lie"],
+  "key": {
+    "s": {
+      "item": "appliedenergistics2:silicon_press"
+    },
+    "p": {
+      "tag": "lazierae2:processors/speculative"
+    },
+    "c": {
+      "item": "appliedenergistics2:calculation_processor_press"
+    },
+    "q": {
+      "item": "appliedenergistics2:quartz_glass"
+    },
+    "u": {
+      "item": "lazierae2:logic_unit"
+    },
+    "l": {
+      "item": "appliedenergistics2:logic_processor_press"
+    },
+    "i": {
+      "item": "appliedenergistics2:inscriber"
+    },
+    "e": {
+      "item": "appliedenergistics2:engineering_processor_press"
+    }
+  },
+  "result": {
+    "item": "lazierae2:circuit_etcher"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "lazierae2:blocks/machine",
+    "up": "lazierae2:blocks/machine",
+    "north": "lazierae2:blocks/crystal_energizer",
+    "south": "lazierae2:blocks/machine",
+    "east": "lazierae2:blocks/machine",
+    "west": "lazierae2:blocks/machine",
+    "particle": "lazierae2:blocks/machine"
+  }
+}

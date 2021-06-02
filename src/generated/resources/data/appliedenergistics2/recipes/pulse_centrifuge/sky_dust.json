@@ -1,0 +1,10 @@
+{
+  "type": "lazierae2:pulse_centrifuge",
+  "processing_time": 160,
+  "output": {
+    "item": "appliedenergistics2:sky_dust"
+  },
+  "input": {
+    "item": "appliedenergistics2:sky_stone_block"
+  }
+}
