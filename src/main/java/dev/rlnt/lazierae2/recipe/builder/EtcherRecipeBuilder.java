@@ -68,7 +68,7 @@ public class EtcherRecipeBuilder extends MultiRecipeBuilder {
         @Nonnull
         @Override
         public IRecipeSerializer<?> getType() {
-            return ModRecipes.ETCHER.get();
+            return ModRecipes.Serializers.ETCHER.get();
         }
     }
 }

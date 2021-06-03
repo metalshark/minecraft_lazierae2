@@ -32,7 +32,7 @@ public class AggregatorRecipe extends MultiRecipe {
     @Nonnull
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.AGGREGATOR.get();
+        return ModRecipes.Serializers.AGGREGATOR.get();
     }
 
     @Nonnull

@@ -68,7 +68,7 @@ public class AggregatorRecipeBuilder extends MultiRecipeBuilder {
         @Nonnull
         @Override
         public IRecipeSerializer<?> getType() {
-            return ModRecipes.AGGREGATOR.get();
+            return ModRecipes.Serializers.AGGREGATOR.get();
         }
     }
 }

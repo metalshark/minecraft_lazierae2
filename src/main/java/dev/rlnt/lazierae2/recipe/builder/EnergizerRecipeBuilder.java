@@ -68,7 +68,7 @@ public class EnergizerRecipeBuilder extends SingleRecipeBuilder {
         @Nonnull
         @Override
         public IRecipeSerializer<?> getType() {
-            return ModRecipes.ENERGIZER.get();
+            return ModRecipes.Serializers.ENERGIZER.get();
         }
     }
 }

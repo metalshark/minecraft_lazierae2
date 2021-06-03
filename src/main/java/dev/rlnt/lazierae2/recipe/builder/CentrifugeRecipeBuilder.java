@@ -68,7 +68,7 @@ public class CentrifugeRecipeBuilder extends SingleRecipeBuilder {
         @Nonnull
         @Override
         public IRecipeSerializer<?> getType() {
-            return ModRecipes.CENTRIFUGE.get();
+            return ModRecipes.Serializers.CENTRIFUGE.get();
         }
     }
 }
