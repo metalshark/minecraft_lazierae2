@@ -2,8 +2,6 @@ package dev.rlnt.lazierae2.container;
 
 import dev.rlnt.lazierae2.container.base.ProcessorContainer;
 import dev.rlnt.lazierae2.inventory.MultiInputSlot;
-import dev.rlnt.lazierae2.inventory.OutputSlot;
-import dev.rlnt.lazierae2.inventory.UpgradeSlot;
 import dev.rlnt.lazierae2.inventory.base.MultiItemHandler;
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.setup.ModContainers;
@@ -25,12 +23,11 @@ public class AggregatorContainer extends ProcessorContainer<AggregatorTile> {
 
     @Override
     protected void initContainerInventory() {
+        // create upgrade and output slot first
+        super.initContainerInventory();
+
         MultiItemHandler itemHandler = tile.getItemHandler();
 
-        // upgrade slot
-        addSlot(new UpgradeSlot(itemHandler, ProcessorTile.SLOT_UPGRADE, 146, 62, tile));
-        // output slot
-        addSlot(new OutputSlot(itemHandler, ProcessorTile.SLOT_OUTPUT, 120, 35));
         // input slots
         addSlot(new MultiInputSlot(itemHandler, tile.getInputSlots()[0], 40, 25, this));
         addSlot(new MultiInputSlot(itemHandler, tile.getInputSlots()[1], 60, 35, this));
