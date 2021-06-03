@@ -3,6 +3,7 @@ package dev.rlnt.lazierae2.data.server;
 import appeng.api.definitions.IBlocks;
 import appeng.api.definitions.IMaterials;
 import appeng.api.definitions.IParts;
+import appeng.api.util.AEColor;
 import appeng.core.Api;
 import dev.rlnt.lazierae2.setup.ModBlocks;
 import dev.rlnt.lazierae2.setup.ModItems;
@@ -31,29 +32,29 @@ public class Recipes extends RecipeProvider {
         // fluix aggregator
         ShapedRecipeBuilder
             .shaped(ModBlocks.AGGREGATOR.get())
-            .pattern("hhh")
+            .pattern("fmf")
             .pattern("rur")
-            .pattern("lml")
-            .define('h', Items.HOPPER)
+            .pattern("lcl")
+            .define('f', aeMaterials.fluixPearl().item())
+            .define('m', aeBlocks.molecularAssembler().item())
             .define('r', Tags.Items.DUSTS_REDSTONE)
             .define('u', ModItems.LOGIC_UNIT.get())
             .define('l', aeMaterials.logicProcessor().item())
-            .define('m', aeBlocks.condenser().item())
+            .define('c', aeBlocks.condenser().item())
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
         // pulse centrifuge
         ShapedRecipeBuilder
             .shaped(ModBlocks.CENTRIFUGE.get())
-            .pattern("ama")
-            .pattern("pup")
             .pattern("fsf")
-            .define('a', aeBlocks.quartzGrowthAccelerator())
-            .define('m', aeBlocks.molecularAssembler().item())
-            .define('p', ModTags.Items.PROCESSOR_PARALLEL)
-            .define('u', ModItems.LOGIC_UNIT.get())
+            .pattern("pup")
+            .pattern("fcf")
             .define('f', ModTags.Items.INGOTS_FLUIX_STEEL)
             .define('s', ModTags.Items.PROCESSOR_SPEC)
+            .define('p', ModTags.Items.PROCESSOR_PARALLEL)
+            .define('u', ModItems.LOGIC_UNIT.get())
+            .define('c', ModBlocks.GROWTH_CHAMBER.get())
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
@@ -74,17 +75,14 @@ public class Recipes extends RecipeProvider {
         // circuit etcher
         ShapedRecipeBuilder
             .shaped(ModBlocks.ETCHER.get())
-            .pattern("spc")
-            .pattern("quq")
-            .pattern("lie")
-            .define('s', aeMaterials.siliconPress().item())
-            .define('p', ModTags.Items.PROCESSOR_SPEC)
-            .define('c', aeMaterials.calcProcessorPress().item())
-            .define('q', aeBlocks.quartzGlass().item())
-            .define('u', ModItems.LOGIC_UNIT.get())
-            .define('l', aeMaterials.logicProcessorPress().item())
+            .pattern("fif")
+            .pattern("ili")
+            .pattern("pup")
+            .define('f', ModTags.Items.INGOTS_FLUIX_STEEL)
             .define('i', aeBlocks.inscriber().item())
-            .define('e', aeMaterials.engProcessorPress().item())
+            .define('l', ModItems.LOGIC_UNIT.get())
+            .define('p', ModTags.Items.PROCESSOR_SPEC)
+            .define('u', ModItems.UNIVERSAL_PRESS.get())
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
@@ -98,6 +96,34 @@ public class Recipes extends RecipeProvider {
             .define('g', aeBlocks.quartzGlass().item())
             .define('d', ModTags.Items.DUSTS_CARBONIC_FLUIX)
             .define('p', aeMaterials.engProcessor().item())
+            .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
+            .save(consumer);
+
+        // growth chamber
+        ShapedRecipeBuilder
+            .shaped(ModBlocks.GROWTH_CHAMBER.get())
+            .pattern("ama")
+            .pattern("aba")
+            .pattern("afa")
+            .define('a', aeBlocks.quartzGrowthAccelerator().item())
+            .define('m', aeBlocks.molecularAssembler().item())
+            .define('b', Items.WATER_BUCKET.asItem())
+            .define('f', aeParts.cableGlass().item(AEColor.TRANSPARENT).asItem())
+            .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
+            .save(consumer);
+
+        // universal press
+        ShapedRecipeBuilder
+            .shaped(ModItems.UNIVERSAL_PRESS.get())
+            .pattern("ipi")
+            .pattern("csl")
+            .pattern("iei")
+            .define('i', ModTags.Items.INGOTS_FLUIX_IRON)
+            .define('p', aeMaterials.siliconPress().item())
+            .define('c', aeMaterials.calcProcessorPress().item())
+            .define('s', aeMaterials.singularity().item())
+            .define('l', aeMaterials.logicProcessorPress().item())
+            .define('e', aeMaterials.engProcessorPress().item())
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
         //endregion shaped-crafting
