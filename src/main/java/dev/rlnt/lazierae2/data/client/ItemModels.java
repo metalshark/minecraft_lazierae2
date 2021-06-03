@@ -37,8 +37,8 @@ public class ItemModels extends ItemModelProvider {
         builder(ModItems.LOGIC_UNIT);
         builder(ModItems.UNIVERSAL_PRESS);
         builder(ModItems.PARALLEL_PRINTED);
-        builder(ModItems.SPEC_PRINTED);
         builder(ModItems.PARALLEL_PROCESSOR);
+        builder(ModItems.SPEC_PRINTED);
         builder(ModItems.SPEC_PROCESSOR);
         builder(ModItems.SPEC_CORE_1);
         builder(ModItems.SPEC_CORE_2);

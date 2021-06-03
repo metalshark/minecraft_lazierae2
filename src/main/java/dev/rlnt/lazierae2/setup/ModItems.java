@@ -21,8 +21,8 @@ public class ModItems {
     public static final RegistryObject<Item> LOGIC_UNIT = simpleItem(LOGIC_UNIT_ID);
     public static final RegistryObject<Item> UNIVERSAL_PRESS = simpleItem(UNIVERSAL_PRESS_ID);
     public static final RegistryObject<Item> PARALLEL_PRINTED = simpleItem(PARALLEL_PRINTED_ID);
-    public static final RegistryObject<Item> SPEC_PRINTED = simpleItem(SPEC_PRINTED_ID);
     public static final RegistryObject<Item> PARALLEL_PROCESSOR = simpleItem(PARALLEL_PROCESSOR_ID);
+    public static final RegistryObject<Item> SPEC_PRINTED = simpleItem(SPEC_PRINTED_ID);
     public static final RegistryObject<Item> SPEC_PROCESSOR = simpleItem(SPEC_PROCESSOR_ID);
     public static final RegistryObject<Item> SPEC_CORE_1 = simpleItem(SPEC_CORE_1_ID);
     public static final RegistryObject<Item> SPEC_CORE_2 = simpleItem(SPEC_CORE_2_ID);
