@@ -28,6 +28,7 @@ public class BlockStates extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        simpleBlock(ModBlocks.GROWTH_CHAMBER.get());
         registerMachine(ModBlocks.AGGREGATOR);
         registerMachine(ModBlocks.CENTRIFUGE);
         registerMachine(ModBlocks.ENERGIZER);

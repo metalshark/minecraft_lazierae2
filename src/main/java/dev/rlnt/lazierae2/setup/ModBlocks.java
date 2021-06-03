@@ -2,10 +2,7 @@ package dev.rlnt.lazierae2.setup;
 
 import static dev.rlnt.lazierae2.Constants.*;
 
-import dev.rlnt.lazierae2.block.AggregatorBlock;
-import dev.rlnt.lazierae2.block.CentrifugeBlock;
-import dev.rlnt.lazierae2.block.EnergizerBlock;
-import dev.rlnt.lazierae2.block.EtcherBlock;
+import dev.rlnt.lazierae2.block.*;
 import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
@@ -21,6 +18,9 @@ public class ModBlocks {
 
     // registry
     static final DeferredRegister<Block> BLOCKS = Registration.createRegistry(ForgeRegistries.BLOCKS);
+
+    // simple block
+    public static final RegistryObject<Block> GROWTH_CHAMBER = register(GROWTH_CHAMBER_ID, SimpleBlock::new);
 
     // processor blocks
     public static final RegistryObject<Block> AGGREGATOR = register(AGGREGATOR_ID, AggregatorBlock::new);
