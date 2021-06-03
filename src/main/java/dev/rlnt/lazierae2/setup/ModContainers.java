@@ -28,7 +28,7 @@ public class ModContainers {
         ForgeRegistries.CONTAINERS
     );
 
-    // processor containers
+    // fluix aggregator
     public static final RegistryObject<ContainerType<AggregatorContainer>> AGGREGATOR = CONTAINERS.register(
         AGGREGATOR_ID,
         () ->
@@ -40,6 +40,7 @@ public class ModContainers {
                 }
             )
     );
+    // pulse centrifuge
     public static final RegistryObject<ContainerType<CentrifugeContainer>> CENTRIFUGE = CONTAINERS.register(
         CENTRIFUGE_ID,
         () ->
@@ -51,6 +52,7 @@ public class ModContainers {
                 }
             )
     );
+    // crystal energizer
     public static final RegistryObject<ContainerType<EnergizerContainer>> ENERGIZER = CONTAINERS.register(
         ENERGIZER_ID,
         () ->
@@ -62,6 +64,7 @@ public class ModContainers {
                 }
             )
     );
+    // circuit etcher
     public static final RegistryObject<ContainerType<EtcherContainer>> ETCHER = CONTAINERS.register(
         ETCHER_ID,
         () ->

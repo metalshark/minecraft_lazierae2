@@ -3,14 +3,11 @@ package dev.rlnt.lazierae2.integration.jei.category;
 import static dev.rlnt.lazierae2.Constants.ETCHER_ID;
 import static dev.rlnt.lazierae2.Constants.MOD_ID;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.rlnt.lazierae2.integration.jei.category.base.ModRecipeCategory;
 import dev.rlnt.lazierae2.recipe.type.EtcherRecipe;
 import dev.rlnt.lazierae2.screen.EtcherScreen;
 import dev.rlnt.lazierae2.setup.ModBlocks;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -26,16 +23,9 @@ public class EtcherCategory extends ModRecipeCategory<EtcherRecipe> {
     private static final int TEXTURE_OFFSET_V = 12;
     private static final int PROGRESS_BAR_OFFSET_U = 52;
     private static final int PROGRESS_BAR_OFFSET_V = 24;
-    private final IDrawableAnimated progressBar;
 
     public EtcherCategory(IGuiHelper guiHelper) {
         super(guiHelper, ETCHER_ID);
-        IDrawableStatic progressBarTexture = guiHelper
-            .drawableBuilder(texture, 178, 0, EtcherScreen.PROGRESS_BAR_WIDTH, EtcherScreen.PROGRESS_BAR_HEIGHT)
-            .setTextureSize(EtcherScreen.ATLAS_WIDTH, ATLAS_HEIGHT)
-            .build();
-        progressBar =
-            guiHelper.createAnimatedDrawable(progressBarTexture, 60, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -62,12 +52,6 @@ public class EtcherCategory extends ModRecipeCategory<EtcherRecipe> {
     }
 
     @Override
-    public void draw(EtcherRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        // draw animated progress bar
-        progressBar.draw(matrixStack, PROGRESS_BAR_OFFSET_U, PROGRESS_BAR_OFFSET_V);
-    }
-
-    @Override
     protected int getAtlasWidth() {
         return EtcherScreen.ATLAS_WIDTH;
     }
@@ -90,6 +74,26 @@ public class EtcherCategory extends ModRecipeCategory<EtcherRecipe> {
     @Override
     protected int getTextureOffsetV() {
         return TEXTURE_OFFSET_V;
+    }
+
+    @Override
+    protected int getProgressBarWidth() {
+        return EtcherScreen.PROGRESS_BAR_WIDTH;
+    }
+
+    @Override
+    protected int getProgressBarHeight() {
+        return EtcherScreen.PROGRESS_BAR_HEIGHT;
+    }
+
+    @Override
+    protected int getProgressBarOffsetU() {
+        return PROGRESS_BAR_OFFSET_U;
+    }
+
+    @Override
+    protected int getProgressBarOffsetV() {
+        return PROGRESS_BAR_OFFSET_V;
     }
 
     @Override

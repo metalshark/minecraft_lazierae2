@@ -22,22 +22,25 @@ public class ModTiles {
     // registry
     static final DeferredRegister<TileEntityType<?>> TILES = Registration.createRegistry(ForgeRegistries.TILE_ENTITIES);
 
-    // processor tiles
+    // fluix aggregator
     public static final RegistryObject<TileEntityType<AggregatorTile>> AGGREGATOR = register(
         AGGREGATOR_ID,
         AggregatorTile::new,
         ModBlocks.AGGREGATOR
     );
+    // pulse centrifuge
     public static final RegistryObject<TileEntityType<CentrifugeTile>> CENTRIFUGE = register(
         CENTRIFUGE_ID,
         CentrifugeTile::new,
         ModBlocks.CENTRIFUGE
     );
+    // crystal energizer
     public static final RegistryObject<TileEntityType<EnergizerTile>> ENERGIZER = register(
         ENERGIZER_ID,
         EnergizerTile::new,
         ModBlocks.ENERGIZER
     );
+    // circuit etcher
     public static final RegistryObject<TileEntityType<EtcherTile>> ETCHER = register(
         ETCHER_ID,
         EtcherTile::new,

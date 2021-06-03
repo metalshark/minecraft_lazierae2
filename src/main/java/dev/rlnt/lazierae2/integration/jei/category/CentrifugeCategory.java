@@ -3,13 +3,11 @@ package dev.rlnt.lazierae2.integration.jei.category;
 import static dev.rlnt.lazierae2.Constants.CENTRIFUGE_ID;
 import static dev.rlnt.lazierae2.Constants.MOD_ID;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.rlnt.lazierae2.integration.jei.category.base.ModRecipeCategory;
 import dev.rlnt.lazierae2.recipe.type.CentrifugeRecipe;
 import dev.rlnt.lazierae2.screen.CentrifugeScreen;
 import dev.rlnt.lazierae2.setup.ModBlocks;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -26,7 +24,6 @@ public class CentrifugeCategory extends ModRecipeCategory<CentrifugeRecipe> {
     private static final int TEXTURE_OFFSET_V = 26;
     private static final int PROGRESS_BAR_OFFSET_U = 29;
     private static final int PROGRESS_BAR_OFFSET_V = 10;
-    private final IDrawableAnimated progressBar;
 
     public CentrifugeCategory(IGuiHelper guiHelper) {
         super(guiHelper, CENTRIFUGE_ID);
@@ -34,8 +31,6 @@ public class CentrifugeCategory extends ModRecipeCategory<CentrifugeRecipe> {
             .drawableBuilder(texture, 178, 0, CentrifugeScreen.PROGRESS_BAR_WIDTH, CentrifugeScreen.PROGRESS_BAR_HEIGHT)
             .setTextureSize(CentrifugeScreen.ATLAS_WIDTH, ATLAS_HEIGHT)
             .build();
-        progressBar =
-            guiHelper.createAnimatedDrawable(progressBarTexture, 60, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -57,12 +52,6 @@ public class CentrifugeCategory extends ModRecipeCategory<CentrifugeRecipe> {
         initSlot(itemStackGroup, 2, true, 5, 9);
         // set ingredients defined in setIngredients()
         itemStackGroup.set(ingredients);
-    }
-
-    @Override
-    public void draw(CentrifugeRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        // draw animated progress bar
-        progressBar.draw(matrixStack, PROGRESS_BAR_OFFSET_U, PROGRESS_BAR_OFFSET_V);
     }
 
     @Override
@@ -88,6 +77,26 @@ public class CentrifugeCategory extends ModRecipeCategory<CentrifugeRecipe> {
     @Override
     protected int getTextureOffsetV() {
         return TEXTURE_OFFSET_V;
+    }
+
+    @Override
+    protected int getProgressBarWidth() {
+        return CentrifugeScreen.PROGRESS_BAR_WIDTH;
+    }
+
+    @Override
+    protected int getProgressBarHeight() {
+        return CentrifugeScreen.PROGRESS_BAR_HEIGHT;
+    }
+
+    @Override
+    protected int getProgressBarOffsetU() {
+        return PROGRESS_BAR_OFFSET_U;
+    }
+
+    @Override
+    protected int getProgressBarOffsetV() {
+        return PROGRESS_BAR_OFFSET_V;
     }
 
     @Override
