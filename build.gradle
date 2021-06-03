@@ -9,8 +9,20 @@ buildscript {
     }
 }
 
+plugins {
+  id "org.sonarqube" version "3.2.0"
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "RLNT_minecraft_lazierae2"
+    property "sonar.organization", "rlnt"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
 
 group = "${mod_base_package}.${mod_id}"
 version = "${minecraft_version}-${mod_version}"
@@ -129,6 +141,10 @@ repositories {
         name 'Progwml6 maven'
         url 'https://dvs1.progwml6.com/files/maven/'
     }
+    maven { // JEI mirror
+        name 'ModMaven'
+        url 'https://modmaven.k-4u.nl'
+    }
     maven { // CraftTweaker
         name 'BlameJared'
         url 'https://maven.blamejared.com'
@@ -151,7 +167,7 @@ dependencies {
     compile fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:${crt_version}")
 
     // dev dependencies - get these from cursemaven
-    runtimeOnly fg.deobf("curse.maven:jei-238222:3318286") // JEI - 7.7.0.99
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3335737") // JEI - 7.7.0.103
     runtimeOnly fg.deobf("curse.maven:top-245211:3319255") // TOP - 3.1.4
     runtimeOnly fg.deobf("curse.maven:solargen-336538:3177119") // SolarGeneration - 2.4.0
 }

@@ -122,3 +122,9 @@ node_modules/
 
 # generated resources cache
 src/generated/resources/.cache/
+
+# vim
+.classpath
+.project
+.settings/
+bin/

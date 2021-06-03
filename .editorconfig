@@ -11,6 +11,6 @@ insert_final_newline = true
 [*.md]
 insert_final_newline = false
 
-[*.{json, prettierrc}]
+[*.{json,prettierrc,yml,yaml}]
 indent_size = 2
 insert_final_newline = false

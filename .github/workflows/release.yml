@@ -1,0 +1,52 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v1.16-*.*.*'
+env:
+  JAVA_VERSION: 8
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v2
+        with:
+          java-version: '${{ env.JAVA_VERSION }}'
+          distribution: 'adopt'
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Build
+        run: ./gradlew build --no-daemon
+      - name: Checks
+        run: ./gradlew check --no-daemon
+      - name: Test
+        run: ./gradlew test --no-daemon
+      - name: Assemble
+        run: ./gradlew jar --no-daemon
+      - name: Find the jar
+        run: echo "JAR_FILE=$(find build/libs/lazierae2-*-*.jar)" >> $GITHUB_ENV
+      - name: Extract Minecraft and Mod Version
+        run: echo ${JAR_FILE%.*} | awk -F- '{ print "MINECRAFT_VERSION=" $2; print "MOD_VERSION=" $3; }' >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v2
+        with:
+          name: LazierAE2-${{ env.MINECRAFT_VERSION }}-${{ env.MOD_VERSION }}.jar
+          path: ${{ env.JAR_FILE }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ${{ env.JAR_FILE }}
