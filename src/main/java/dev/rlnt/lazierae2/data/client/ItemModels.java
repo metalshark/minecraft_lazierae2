@@ -53,6 +53,6 @@ public class ItemModels extends ItemModelProvider {
     private void builder(RegistryObject<Item> item) {
         String name = Objects.requireNonNull(item.get().getRegistryName()).toString().substring(MOD_ID.length() + 1);
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
-        getBuilder(name).parent(itemGenerated).texture("layer0", "items/" + name);
+        getBuilder(name).parent(itemGenerated).texture("layer0", "item/" + name);
     }
 }
