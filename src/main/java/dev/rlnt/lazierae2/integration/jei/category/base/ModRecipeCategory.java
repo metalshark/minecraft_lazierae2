@@ -2,6 +2,7 @@ package dev.rlnt.lazierae2.integration.jei.category.base;
 
 import static dev.rlnt.lazierae2.Constants.MOD_ID;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.rlnt.lazierae2.recipe.type.base.AbstractRecipe;
 import dev.rlnt.lazierae2.recipe.type.base.MultiRecipe;
 import dev.rlnt.lazierae2.recipe.type.base.SingleRecipe;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
+import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -28,6 +31,7 @@ public abstract class ModRecipeCategory<R extends AbstractRecipe> implements IRe
     private final String localizedName;
     private final IDrawable background;
     private final IDrawable icon;
+    private final IDrawableAnimated progressBar;
 
     protected ModRecipeCategory(IGuiHelper guiHelper, String id) {
         texture = new ResourceLocation(MOD_ID, "textures/gui/" + id + ".png");
@@ -44,6 +48,12 @@ public abstract class ModRecipeCategory<R extends AbstractRecipe> implements IRe
                 .setTextureSize(getAtlasWidth(), ATLAS_HEIGHT)
                 .build();
         icon = guiHelper.createDrawableIngredient(new ItemStack(getIconProvider()));
+        IDrawableStatic progressBarTexture = guiHelper
+            .drawableBuilder(texture, 178, 0, getProgressBarWidth(), getProgressBarHeight())
+            .setTextureSize(getAtlasWidth(), ATLAS_HEIGHT)
+            .build();
+        progressBar =
+            guiHelper.createAnimatedDrawable(progressBarTexture, 60, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -79,6 +89,12 @@ public abstract class ModRecipeCategory<R extends AbstractRecipe> implements IRe
         }
     }
 
+    @Override
+    public void draw(R recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+        // draw animated progress bar
+        progressBar.draw(matrixStack, getProgressBarOffsetU(), getProgressBarOffsetV());
+    }
+
     /**
      * Inits an item slot for the JEI category.
      * Since JEI calculates the position by assuming slots are 18x18 pixels
@@ -88,39 +104,23 @@ public abstract class ModRecipeCategory<R extends AbstractRecipe> implements IRe
         itemStackGroup.init(slotIndex, input, xPos - 1, yPos - 1);
     }
 
-    /**
-     * Gets the width of the texture atlas.
-     * @return the width of the texture atlas
-     */
     protected abstract int getAtlasWidth();
 
-    /**
-     * Gets the texture width of the JEI background for the category.
-     * @return the background texture width
-     */
     protected abstract int getTextureWidth();
 
-    /**
-     * Gets the texture height of the JEI background for the category.
-     * @return the background texture height
-     */
     protected abstract int getTextureHeight();
 
-    /**
-     * Gets the x-axis texture offset of the JEI background for the category.
-     * @return the x-axis texture offset
-     */
     protected abstract int getTextureOffsetU();
 
-    /**
-     * Gets the y-axis texture offset of the JEI background for the category.
-     * @return the y-axis texture offset
-     */
     protected abstract int getTextureOffsetV();
 
-    /**
-     * Gets the icon provider of the category for the icon representation.
-     * @return the category icon item provider
-     */
+    protected abstract int getProgressBarWidth();
+
+    protected abstract int getProgressBarHeight();
+
+    protected abstract int getProgressBarOffsetU();
+
+    protected abstract int getProgressBarOffsetV();
+
     protected abstract IItemProvider getIconProvider();
 }

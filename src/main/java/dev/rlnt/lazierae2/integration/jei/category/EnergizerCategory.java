@@ -11,8 +11,6 @@ import dev.rlnt.lazierae2.setup.ModBlocks;
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.util.TextUtil;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.drawable.IDrawableAnimated;
-import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -29,16 +27,9 @@ public class EnergizerCategory extends ModRecipeCategory<EnergizerRecipe> {
     private static final int TEXTURE_OFFSET_V = 26;
     private static final int PROGRESS_BAR_OFFSET_U = 30;
     private static final int PROGRESS_BAR_OFFSET_V = 3;
-    private final IDrawableAnimated progressBar;
 
     public EnergizerCategory(IGuiHelper guiHelper) {
         super(guiHelper, ENERGIZER_ID);
-        IDrawableStatic progressBarTexture = guiHelper
-            .drawableBuilder(texture, 178, 0, EnergizerScreen.PROGRESS_BAR_WIDTH, EnergizerScreen.PROGRESS_BAR_HEIGHT)
-            .setTextureSize(EnergizerScreen.ATLAS_WIDTH, ATLAS_HEIGHT)
-            .build();
-        progressBar =
-            guiHelper.createAnimatedDrawable(progressBarTexture, 60, IDrawableAnimated.StartDirection.LEFT, false);
     }
 
     @Override
@@ -64,8 +55,9 @@ public class EnergizerCategory extends ModRecipeCategory<EnergizerRecipe> {
 
     @Override
     public void draw(EnergizerRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        // draw animated progress bar
-        progressBar.draw(matrixStack, PROGRESS_BAR_OFFSET_U, PROGRESS_BAR_OFFSET_V);
+        // draw progress bar from super class
+        super.draw(recipe, matrixStack, mouseX, mouseY);
+
         // draw required energy
         Minecraft
             .getInstance()
@@ -104,6 +96,26 @@ public class EnergizerCategory extends ModRecipeCategory<EnergizerRecipe> {
     @Override
     protected int getTextureOffsetV() {
         return TEXTURE_OFFSET_V;
+    }
+
+    @Override
+    protected int getProgressBarWidth() {
+        return EnergizerScreen.PROGRESS_BAR_WIDTH;
+    }
+
+    @Override
+    protected int getProgressBarHeight() {
+        return EnergizerScreen.PROGRESS_BAR_HEIGHT;
+    }
+
+    @Override
+    protected int getProgressBarOffsetU() {
+        return PROGRESS_BAR_OFFSET_U;
+    }
+
+    @Override
+    protected int getProgressBarOffsetV() {
+        return PROGRESS_BAR_OFFSET_V;
     }
 
     @Override
