@@ -22,6 +22,7 @@ public class ItemModels extends ItemModelProvider {
     @Override
     protected void registerModels() {
         // blockitems
+        existingParent(ModBlocks.GROWTH_CHAMBER);
         existingParent(ModBlocks.AGGREGATOR);
         existingParent(ModBlocks.CENTRIFUGE);
         existingParent(ModBlocks.ENERGIZER);
@@ -34,6 +35,9 @@ public class ItemModels extends ItemModelProvider {
         builder(ModItems.FLUIX_IRON);
         builder(ModItems.FLUIX_STEEL);
         builder(ModItems.LOGIC_UNIT);
+        builder(ModItems.UNIVERSAL_PRESS);
+        builder(ModItems.PARALLEL_PRINTED);
+        builder(ModItems.SPEC_PRINTED);
         builder(ModItems.PARALLEL_PROCESSOR);
         builder(ModItems.SPEC_PROCESSOR);
         builder(ModItems.SPEC_CORE_1);
@@ -53,6 +57,6 @@ public class ItemModels extends ItemModelProvider {
     private void builder(RegistryObject<Item> item) {
         String name = Objects.requireNonNull(item.get().getRegistryName()).toString().substring(MOD_ID.length() + 1);
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
-        getBuilder(name).parent(itemGenerated).texture("layer0", "items/" + name);
+        getBuilder(name).parent(itemGenerated).texture("layer0", "item/" + name);
     }
 }

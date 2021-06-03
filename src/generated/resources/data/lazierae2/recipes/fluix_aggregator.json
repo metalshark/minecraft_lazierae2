@@ -1,9 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["hhh", "rur", "lml"],
+  "pattern": ["fmf", "rur", "lcl"],
   "key": {
-    "h": {
-      "item": "minecraft:hopper"
+    "f": {
+      "item": "appliedenergistics2:fluix_pearl"
+    },
+    "m": {
+      "item": "appliedenergistics2:molecular_assembler"
     },
     "r": {
       "tag": "forge:dusts/redstone"
@@ -14,7 +17,7 @@
     "l": {
       "item": "appliedenergistics2:logic_processor"
     },
-    "m": {
+    "c": {
       "item": "appliedenergistics2:condenser"
     }
   },

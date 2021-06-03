@@ -20,7 +20,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class BlockStates extends BlockStateProvider {
 
-    private static final String MACHINE_BLOCK_TEXTURE = "blocks/machine";
+    private static final String MACHINE_BLOCK_TEXTURE = "block/machine";
 
     public BlockStates(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, MOD_ID, existingFileHelper);
@@ -28,6 +28,7 @@ public class BlockStates extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        simpleBlock(ModBlocks.GROWTH_CHAMBER.get());
         registerMachine(ModBlocks.AGGREGATOR);
         registerMachine(ModBlocks.CENTRIFUGE);
         registerMachine(ModBlocks.ENERGIZER);
@@ -37,8 +38,8 @@ public class BlockStates extends BlockStateProvider {
     private void registerMachine(RegistryObject<Block> machine) {
         String name = Objects.requireNonNull(machine.get().getRegistryName()).toString().substring(MOD_ID.length() + 1);
         ResourceLocation mainRL = new ResourceLocation(MOD_ID, MACHINE_BLOCK_TEXTURE);
-        ResourceLocation frontRL = new ResourceLocation(MOD_ID, "blocks/" + name);
-        ResourceLocation frontRLActive = new ResourceLocation(MOD_ID, "blocks/" + name + "_active");
+        ResourceLocation frontRL = new ResourceLocation(MOD_ID, "block/" + name);
+        ResourceLocation frontRLActive = new ResourceLocation(MOD_ID, "block/" + name + "_active");
         BlockModelBuilder modelMachine = models()
             .cube(name, mainRL, mainRL, frontRL, mainRL, mainRL, mainRL)
             .texture("particle", modLoc(MACHINE_BLOCK_TEXTURE));

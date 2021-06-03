@@ -6,13 +6,13 @@
   },
   "ingredients": {
     "top": {
-      "tag": "forge:gems/resonating"
+      "item": "lazierae2:parallel_printed"
     },
     "middle": {
       "tag": "forge:dusts/redstone"
     },
     "bottom": {
-      "item": "appliedenergistics2:silicon"
+      "item": "appliedenergistics2:printed_silicon"
     }
   }
 }

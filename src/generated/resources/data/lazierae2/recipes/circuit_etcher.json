@@ -1,30 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["spc", "quq", "lie"],
+  "pattern": ["fif", "ili", "pup"],
   "key": {
-    "s": {
-      "item": "appliedenergistics2:silicon_press"
-    },
-    "p": {
-      "tag": "lazierae2:processors/speculative"
-    },
-    "c": {
-      "item": "appliedenergistics2:calculation_processor_press"
-    },
-    "q": {
-      "item": "appliedenergistics2:quartz_glass"
-    },
-    "u": {
-      "item": "lazierae2:logic_unit"
-    },
-    "l": {
-      "item": "appliedenergistics2:logic_processor_press"
+    "f": {
+      "tag": "forge:ingots/fluix_steel"
     },
     "i": {
       "item": "appliedenergistics2:inscriber"
     },
-    "e": {
-      "item": "appliedenergistics2:engineering_processor_press"
+    "l": {
+      "item": "lazierae2:logic_unit"
+    },
+    "p": {
+      "tag": "lazierae2:processors/speculative"
+    },
+    "u": {
+      "item": "lazierae2:universal_press"
     }
   },
   "result": {
