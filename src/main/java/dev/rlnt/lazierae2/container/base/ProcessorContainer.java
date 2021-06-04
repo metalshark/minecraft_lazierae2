@@ -1,9 +1,9 @@
 package dev.rlnt.lazierae2.container.base;
 
-import dev.rlnt.lazierae2.inventory.OutputSlot;
-import dev.rlnt.lazierae2.inventory.UpgradeSlot;
 import dev.rlnt.lazierae2.inventory.base.AbstractItemHandler;
 import dev.rlnt.lazierae2.inventory.base.SingleItemHandler;
+import dev.rlnt.lazierae2.inventory.component.OutputSlot;
+import dev.rlnt.lazierae2.inventory.component.UpgradeSlot;
 import dev.rlnt.lazierae2.tile.base.ProcessorTile;
 import dev.rlnt.lazierae2.util.GameUtil;
 import dev.rlnt.lazierae2.util.IOUtil;

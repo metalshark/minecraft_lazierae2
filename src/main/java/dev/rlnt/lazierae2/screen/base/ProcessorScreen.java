@@ -2,7 +2,7 @@ package dev.rlnt.lazierae2.screen.base;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.rlnt.lazierae2.container.base.ProcessorContainer;
-import dev.rlnt.lazierae2.inventory.UpgradeSlot;
+import dev.rlnt.lazierae2.inventory.component.UpgradeSlot;
 import dev.rlnt.lazierae2.network.EnergyResetPacket;
 import dev.rlnt.lazierae2.network.ExtractTogglePacket;
 import dev.rlnt.lazierae2.network.IOUpdatePacket;

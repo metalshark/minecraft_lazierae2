@@ -1,8 +1,8 @@
 package dev.rlnt.lazierae2.container;
 
 import dev.rlnt.lazierae2.container.base.ProcessorContainer;
-import dev.rlnt.lazierae2.inventory.MultiInputSlot;
 import dev.rlnt.lazierae2.inventory.base.MultiItemHandler;
+import dev.rlnt.lazierae2.inventory.component.MultiInputSlot;
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.setup.ModContainers;
 import dev.rlnt.lazierae2.tile.EtcherTile;

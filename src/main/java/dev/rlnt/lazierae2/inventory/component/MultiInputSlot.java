@@ -1,4 +1,4 @@
-package dev.rlnt.lazierae2.inventory;
+package dev.rlnt.lazierae2.inventory.component;
 
 import dev.rlnt.lazierae2.container.base.ProcessorContainer;
 import dev.rlnt.lazierae2.inventory.base.MultiItemHandler;
