@@ -29,6 +29,7 @@ public class TextUtil {
         TRANSLATION_TYPES.put(TRANSLATE_TYPE.BUTTON, "button");
         TRANSLATION_TYPES.put(TRANSLATE_TYPE.IO_SIDE, "io_side");
         TRANSLATION_TYPES.put(TRANSLATE_TYPE.IO_SETTING, "io_setting");
+        TRANSLATION_TYPES.put(TRANSLATE_TYPE.EXTRACT_SETTING, "extract_setting");
         TRANSLATION_TYPES.put(TRANSLATE_TYPE.JEI, "jei");
 
         // adjust decimal format
@@ -134,5 +135,14 @@ public class TextUtil {
      */
     public static String translateIOSetting(IO_SETTING setting) {
         return IOUtil.getIoSettingsTranslations().get(setting);
+    }
+
+    /**
+     * Translates the given auto extract mode to a string.
+     * @param mode the mode to translate
+     * @return the mode as string
+     */
+    public static TranslationTextComponent translateIOSetting(boolean mode) {
+        return TextUtil.translate(TRANSLATE_TYPE.TOOLTIP, mode ? "extract_activated" : "extract_deactivated");
     }
 }

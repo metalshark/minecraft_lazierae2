@@ -68,6 +68,12 @@ public interface IInfo {
     EnumMap<TypeEnums.IO_SIDE, TypeEnums.IO_SETTING> getSideConfig();
 
     /**
+     * Gets if the tile entity's auto extract mode is enabled.
+     * @return true if auto extraction is active, false otherwise
+     */
+    boolean isAutoExtracting();
+
+    /**
      * Handles the info synchronization between the server-side tile entity
      * and the container to provide client-side information for the screen.
      */
