@@ -18,6 +18,7 @@ import dev.rlnt.lazierae2.util.TypeEnums.TRANSLATE_TYPE;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.BlockState;
@@ -25,17 +26,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -49,6 +54,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     private final AbstractEnergyStorage energyStorage;
     private final LazyOptional<EnergyStorage> energyStorageCap;
     private final LazyOptional<IItemHandlerModifiable>[] sidedInvWrapper;
+    private final EnumMap<Direction, LazyOptional<IItemHandler>> cache = new EnumMap<>(Direction.class);
     private EnumMap<IO_SIDE, IO_SETTING> sideConfig = new EnumMap<>(IO_SIDE.class);
     private ItemStack currentStack = ItemStack.EMPTY;
     private float progress;
@@ -421,6 +427,92 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
 
         // reset progress and mark entity as changed
         stopWork();
+    }
+
+    private void autoExport() {
+        // level can't be null here because it's called from tick()
+        assert level != null;
+
+        // only try to export if the output slot has an item
+        if (itemHandler.getStackInSlot(SLOT_OUTPUT).isEmpty()) return;
+
+        Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+        EnumMap<Direction, TileEntity> outputInventories = new EnumMap<>(Direction.class);
+
+        // fill the adjacent inventory map with possible output inventories
+        sideConfig.forEach(
+            (side, setting) -> {
+                // only check sides which are actually set to be able to output
+                if (setting != IO_SETTING.OUTPUT && setting != IO_SETTING.IO) return;
+
+                // decide the direction depending on the IO side
+                Direction direction;
+                switch (side) {
+                    case TOP:
+                        direction = Direction.UP;
+                        break;
+                    case LEFT:
+                        direction = facing.getClockWise();
+                        break;
+                    case FRONT:
+                        direction = facing;
+                        break;
+                    case RIGHT:
+                        direction = facing.getCounterClockWise();
+                        break;
+                    case BOTTOM:
+                        direction = Direction.DOWN;
+                        break;
+                    case BACK:
+                        direction = facing.getOpposite();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("No side found called " + side);
+                }
+
+                // add the adjacent inventory on the current side to the map
+                outputInventories.put(direction, level.getBlockEntity(worldPosition.relative(direction, 1)));
+            }
+        );
+
+        // iterate over all possible output inventories and try to push the output items
+        for (Map.Entry<Direction, TileEntity> entry : outputInventories.entrySet()) {
+            // try to load capability from cache
+            LazyOptional<IItemHandler> target = cache.get(entry.getKey());
+
+            // if cached capability was invalidated or wasn't filled yet, cache the current one
+            if (target == null) {
+                ICapabilityProvider provider = entry.getValue();
+                target =
+                    provider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, entry.getKey().getOpposite());
+                cache.put(entry.getKey(), target);
+                target.addListener(self -> cache.put(entry.getKey(), null));
+            }
+
+            // defines if the loop should stop after the next inventory because the export items are empty
+            AtomicBoolean shouldBreak = new AtomicBoolean(false);
+
+            // if the target inventory has a valid inventory capability
+            target.ifPresent(
+                targetInventory -> {
+                    // try to export everything in the output slot to the inventory
+                    ItemStack toExport = itemHandler.getStackInSlot(SLOT_OUTPUT);
+                    ItemStack remaining = ItemHandlerHelper.insertItemStacked(targetInventory, toExport, false);
+                    // mark the tile entity as changed when something was exported
+                    if (remaining.getCount() != toExport.getCount() || !remaining.sameItem(toExport)) {
+                        // set the stack in the output slot to the remaining stack
+                        itemHandler.setStackInSlot(SLOT_OUTPUT, remaining);
+                        setChanged();
+                    }
+                    // break the loop for other output inventories if nothing is left to export
+                    if (remaining.isEmpty()) {
+                        shouldBreak.set(true);
+                    }
+                }
+            );
+
+            if (shouldBreak.get()) return;
+        }
     }
 
     /**
