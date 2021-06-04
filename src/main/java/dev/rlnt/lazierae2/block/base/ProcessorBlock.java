@@ -17,11 +17,13 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -85,6 +87,36 @@ public abstract class ProcessorBlock extends MachineBlock {
     }
 
     @Override
+    public void playerWillDestroy(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        TileEntity tileEntity = world.getBlockEntity(pos);
+
+        if (tileEntity instanceof ProcessorTile) {
+            ProcessorTile<?, ?> tile = (ProcessorTile<?, ?>) world.getBlockEntity(pos);
+            if (tile != null && !world.isClientSide) {
+                // drop processor inventory
+                IItemHandler itemHandler = tile.getItemHandler();
+                int[] inputSlots = tile.getInputSlots();
+                int[] outputSlots = { ProcessorTile.SLOT_OUTPUT };
+                int[] dropSlots = ArrayUtils.addAll(inputSlots, outputSlots);
+                for (int slot : dropSlots) {
+                    ItemStack stack = itemHandler.getStackInSlot(slot);
+                    if (!stack.isEmpty()) world.addFreshEntity(
+                        new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack)
+                    );
+                }
+
+                // drop block item with upgrade and energy information
+                if (!player.isCreative()) {
+                    ItemStack blockStack = tile.getBlockItem();
+                    world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), blockStack));
+                }
+            }
+        }
+
+        super.playerWillDestroy(world, pos, state, player);
+    }
+
+    @Override
     public void appendHoverText(
         ItemStack stack,
         @Nullable IBlockReader world,
@@ -123,35 +155,5 @@ public abstract class ProcessorBlock extends MachineBlock {
         }
 
         super.appendHoverText(stack, world, tooltip, flagIn);
-    }
-
-    /**
-     * Fired when the block is removed.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
-        // don't do shit if the state didn't change or the tile is null
-        ProcessorTile<?, ?> tile = (ProcessorTile<?, ?>) world.getBlockEntity(pos);
-        if (tile != null && state.getBlock() != newState.getBlock()) {
-            // drop processor inventory
-            IItemHandler itemHandler = tile.getItemHandler();
-            int[] inputSlots = tile.getInputSlots();
-            int[] outputSlots = { ProcessorTile.SLOT_OUTPUT };
-            int[] dropSlots = ArrayUtils.addAll(inputSlots, outputSlots);
-            for (int slot : dropSlots) {
-                ItemStack stack = itemHandler.getStackInSlot(slot);
-                if (!stack.isEmpty()) world.addFreshEntity(
-                    new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stack)
-                );
-            }
-
-            // drop block item with upgrade and energy information
-            ItemStack blockStack = tile.getBlockItem();
-            world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), blockStack));
-        }
-
-        // call super last because it actually removes the tile entity
-        super.onRemove(state, world, pos, newState, isMoving);
     }
 }
