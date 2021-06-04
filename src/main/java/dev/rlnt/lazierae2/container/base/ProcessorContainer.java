@@ -5,6 +5,7 @@ import dev.rlnt.lazierae2.inventory.UpgradeSlot;
 import dev.rlnt.lazierae2.inventory.base.AbstractItemHandler;
 import dev.rlnt.lazierae2.inventory.base.SingleItemHandler;
 import dev.rlnt.lazierae2.tile.base.ProcessorTile;
+import dev.rlnt.lazierae2.util.GameUtil;
 import dev.rlnt.lazierae2.util.IOUtil;
 import dev.rlnt.lazierae2.util.TypeEnums;
 import java.util.EnumMap;
@@ -72,7 +73,7 @@ public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends 
             if (!tryMergeToPlayerInventory(slotStack)) return ItemStack.EMPTY;
         } else if (isValidForInput(slotStack)) {
             if (!tryMergeToInput(slotStack)) return ItemStack.EMPTY;
-        } else if (ProcessorTile.isUpgrade(slotStack)) {
+        } else if (GameUtil.isUpgrade(slotStack)) {
             // check if the upgrade can be merged to the upgrade slot and merge
             int mergeableUpgrades = getMergeableUpgrades();
             if (mergeableUpgrades > 0) {

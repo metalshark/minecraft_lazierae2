@@ -2,7 +2,6 @@ package dev.rlnt.lazierae2.tile.base;
 
 import static dev.rlnt.lazierae2.Constants.*;
 
-import appeng.core.Api;
 import dev.rlnt.lazierae2.block.base.ProcessorBlock;
 import dev.rlnt.lazierae2.inventory.base.AbstractItemHandler;
 import dev.rlnt.lazierae2.inventory.base.MultiItemHandler;
@@ -148,15 +147,6 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
                 Direction.WEST,
                 Direction.EAST
             );
-    }
-
-    /**
-     * Checks if the item is a valid processor upgrade.
-     * @param stack the ItemStack to check
-     * @return true if the item is a valid processor upgrade, false otherwise
-     */
-    public static boolean isUpgrade(ItemStack stack) {
-        return stack.getItem() == Api.instance().definitions().materials().cardSpeed().item();
     }
 
     @Override

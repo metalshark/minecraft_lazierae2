@@ -2,6 +2,7 @@ package dev.rlnt.lazierae2.inventory;
 
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.tile.base.ProcessorTile;
+import dev.rlnt.lazierae2.util.GameUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -19,7 +20,7 @@ public class UpgradeSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return ProcessorTile.isUpgrade(stack);
+        return GameUtil.isUpgrade(stack);
     }
 
     @Override
