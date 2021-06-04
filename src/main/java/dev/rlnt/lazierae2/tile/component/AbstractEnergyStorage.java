@@ -27,7 +27,7 @@ public class AbstractEnergyStorage extends EnergyStorage implements INBTSerializ
 
     /**
      * Sets the energy capacity direclty.
-     * Also adjusts another necessary values which
+     * Also adjusts other necessary values which
      * depend on the capacity.
      * @param capacity the new capacity
      */

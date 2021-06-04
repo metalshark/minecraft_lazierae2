@@ -26,6 +26,7 @@ public class TypeEnums {
         BUTTON,
         IO_SIDE,
         IO_SETTING,
+        EXTRACT_SETTING,
         JEI
     }
 

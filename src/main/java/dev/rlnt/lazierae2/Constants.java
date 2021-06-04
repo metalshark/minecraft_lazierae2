@@ -12,6 +12,7 @@ public final class Constants {
     public static final String STACK_CURRENT = "stack_current";
     public static final String STACK_OUTPUT = "stack_output";
     public static final String IO_CONFIG = "io_config";
+    public static final String AUTO_EXTRACT = "auto_extract";
     // nbt info recipe
     public static final String INPUT = "input";
     public static final String INPUTS = "inputs";

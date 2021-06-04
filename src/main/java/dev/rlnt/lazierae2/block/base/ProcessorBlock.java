@@ -77,6 +77,7 @@ public abstract class ProcessorBlock extends MachineBlock {
                 if (nbt.contains(IO_CONFIG)) tile.setSideConfig(
                     IOUtil.getSideConfigFromArray(nbt.getIntArray(IO_CONFIG))
                 );
+                if (nbt.contains(AUTO_EXTRACT)) tile.toggleAutoExtract();
             }
         }
 

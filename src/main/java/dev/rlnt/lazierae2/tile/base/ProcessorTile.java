@@ -48,13 +48,14 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
 
     public static final int SLOT_UPGRADE = 0;
     public static final int SLOT_OUTPUT = 1;
-    public static final int INFO_SIZE = 13;
+    public static final int INFO_SIZE = 14;
     private final int[] inputSlots;
     private final String id;
     private final AbstractEnergyStorage energyStorage;
     private final LazyOptional<EnergyStorage> energyStorageCap;
     private final LazyOptional<IItemHandlerModifiable>[] sidedInvWrapper;
     private final EnumMap<Direction, LazyOptional<IItemHandler>> cache = new EnumMap<>(Direction.class);
+    private boolean autoExtract = false;
     private EnumMap<IO_SIDE, IO_SETTING> sideConfig = new EnumMap<>(IO_SIDE.class);
     private ItemStack currentStack = ItemStack.EMPTY;
     private float progress;
@@ -100,6 +101,9 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
                 case 12:
                     // back side io config
                     return getIOSetting(IO_SIDE.BACK);
+                case 13:
+                    // auto extraction
+                    return autoExtract ? 1 : 0;
                 default:
                     return 0;
             }
@@ -166,6 +170,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         currentStack = ItemStack.of(nbt.getCompound(STACK_CURRENT));
         finishedStack = ItemStack.of(nbt.getCompound(STACK_OUTPUT));
         sideConfig = (EnumMap<IO_SIDE, IO_SETTING>) IOUtil.getSideConfigFromArray(nbt.getIntArray(IO_CONFIG));
+        autoExtract = nbt.getBoolean(AUTO_EXTRACT);
         refreshEnergyCapacity();
     }
 
@@ -179,6 +184,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         nbt.put(STACK_CURRENT, currentStack.save(new CompoundNBT()));
         nbt.put(STACK_OUTPUT, finishedStack.save(new CompoundNBT()));
         nbt.putIntArray(IO_CONFIG, IOUtil.serializeSideConfig(sideConfig));
+        nbt.putBoolean(AUTO_EXTRACT, autoExtract);
         return super.save(nbt);
     }
 
@@ -230,7 +236,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         if (level == null || level.isClientSide()) return;
 
         // try to auto extract every 20 ticks (1 second)
-        if (level.getGameTime() % 20 == 0) autoExport();
+        if (autoExtract && level.getGameTime() % 20 == 0) autoExport();
 
         // get the recipe for the current input
         R recipe = getRecipe();
@@ -447,32 +453,8 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             (side, setting) -> {
                 // only check sides which are actually set to be able to output
                 if (setting != IO_SETTING.OUTPUT && setting != IO_SETTING.IO) return;
-
                 // decide the direction depending on the IO side
-                Direction direction;
-                switch (side) {
-                    case TOP:
-                        direction = Direction.UP;
-                        break;
-                    case LEFT:
-                        direction = facing.getClockWise();
-                        break;
-                    case FRONT:
-                        direction = facing;
-                        break;
-                    case RIGHT:
-                        direction = facing.getCounterClockWise();
-                        break;
-                    case BOTTOM:
-                        direction = Direction.DOWN;
-                        break;
-                    case BACK:
-                        direction = facing.getOpposite();
-                        break;
-                    default:
-                        throw new IllegalArgumentException("No side found called " + side);
-                }
-
+                Direction direction = getDirection(facing, side);
                 // add the adjacent inventory on the current side to the map
                 outputInventories.put(direction, level.getBlockEntity(worldPosition.relative(direction, 1)));
             }
@@ -486,6 +468,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             // if cached capability was invalidated or wasn't filled yet, cache the current one
             if (target == null) {
                 ICapabilityProvider provider = entry.getValue();
+                if (provider == null) continue;
                 target =
                     provider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, entry.getKey().getOpposite());
                 cache.put(entry.getKey(), target);
@@ -516,6 +499,39 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
 
             if (shouldBreak.get()) return;
         }
+    }
+
+    /**
+     * Gets the direction for finding the adjacent inventory for the auto extract.
+     * @param facing the direction the processor is currently facing
+     * @param side the io side to get the direction for
+     * @return the direction of the passed in io side
+     */
+    private Direction getDirection(Direction facing, IO_SIDE side) {
+        Direction direction;
+        switch (side) {
+            case TOP:
+                direction = Direction.UP;
+                break;
+            case LEFT:
+                direction = facing.getClockWise();
+                break;
+            case FRONT:
+                direction = facing;
+                break;
+            case RIGHT:
+                direction = facing.getCounterClockWise();
+                break;
+            case BOTTOM:
+                direction = Direction.DOWN;
+                break;
+            case BACK:
+                direction = facing.getOpposite();
+                break;
+            default:
+                throw new IllegalArgumentException("No side found called " + side);
+        }
+        return direction;
     }
 
     /**
@@ -594,6 +610,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             itemHandler.getStackInSlot(SLOT_UPGRADE).save(new CompoundNBT())
         );
         if (IOUtil.isChanged(sideConfig)) nbt.putIntArray(IO_CONFIG, IOUtil.serializeSideConfig(sideConfig));
+        if (autoExtract) nbt.putBoolean(AUTO_EXTRACT, true);
         ItemStack stack = new ItemStack(getItemProvider());
         if (!nbt.isEmpty()) stack.setTag(nbt);
         return stack;
@@ -607,6 +624,10 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     private void setProgress(float progress) {
         this.progress = progress;
         setChanged();
+    }
+
+    public void toggleAutoExtract() {
+        autoExtract = !autoExtract;
     }
 
     public int[] getInputSlots() {

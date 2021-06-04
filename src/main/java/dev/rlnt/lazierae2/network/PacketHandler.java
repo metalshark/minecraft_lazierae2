@@ -8,6 +8,7 @@ import java.util.Objects;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+@SuppressWarnings("java:S1602")
 public class PacketHandler {
 
     public static final SimpleChannel channel;
@@ -30,7 +31,14 @@ public class PacketHandler {
             .add();
 
         channel
-            .messageBuilder(IOUpdatePacket.class, 2)
+            .messageBuilder(ExtractTogglePacket.class, 2)
+            .decoder(ExtractTogglePacket::fromBytes)
+            .encoder(ExtractTogglePacket::toBytes)
+            .consumer(ExtractTogglePacket::handle)
+            .add();
+
+        channel
+            .messageBuilder(IOUpdatePacket.class, 3)
             .decoder(IOUpdatePacket::fromBytes)
             .encoder(IOUpdatePacket::toBytes)
             .consumer(IOUpdatePacket::handle)

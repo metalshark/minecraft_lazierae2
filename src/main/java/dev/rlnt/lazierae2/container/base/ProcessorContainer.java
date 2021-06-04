@@ -214,6 +214,11 @@ public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends 
     }
 
     @Override
+    public boolean isAutoExtracting() {
+        return info.get(13) == 1;
+    }
+
+    @Override
     public void syncInfo() {
         addDataSlots(info);
     }

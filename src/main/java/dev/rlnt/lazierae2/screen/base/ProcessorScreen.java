@@ -4,10 +4,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import dev.rlnt.lazierae2.container.base.ProcessorContainer;
 import dev.rlnt.lazierae2.inventory.UpgradeSlot;
 import dev.rlnt.lazierae2.network.EnergyResetPacket;
+import dev.rlnt.lazierae2.network.ExtractTogglePacket;
 import dev.rlnt.lazierae2.network.IOUpdatePacket;
 import dev.rlnt.lazierae2.network.PacketHandler;
-import dev.rlnt.lazierae2.screen.DumpButton;
-import dev.rlnt.lazierae2.screen.IOButton;
+import dev.rlnt.lazierae2.screen.components.DumpButton;
+import dev.rlnt.lazierae2.screen.components.ExtractButton;
+import dev.rlnt.lazierae2.screen.components.IOButton;
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.util.IOUtil;
 import dev.rlnt.lazierae2.util.TextUtil;
@@ -54,6 +56,7 @@ public abstract class ProcessorScreen<C extends ProcessorContainer<?>> extends M
     protected void init() {
         super.init();
         addButton(new DumpButton(this, button -> PacketHandler.channel.sendToServer(new EnergyResetPacket())));
+        addButton(new ExtractButton(this, button -> PacketHandler.channel.sendToServer(new ExtractTogglePacket())));
         addButton(
             new IOButton(
                 this,
