@@ -54,7 +54,7 @@ public class Recipes extends RecipeProvider {
             .define('s', ModTags.Items.PROCESSOR_SPEC)
             .define('p', ModTags.Items.PROCESSOR_PARALLEL)
             .define('u', ModItems.LOGIC_UNIT.get())
-            .define('c', ModBlocks.GROWTH_CHAMBER.get())
+            .define('c', ModItems.GROWTH_CHAMBER.get())
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
@@ -101,7 +101,7 @@ public class Recipes extends RecipeProvider {
 
         // growth chamber
         ShapedRecipeBuilder
-            .shaped(ModBlocks.GROWTH_CHAMBER.get())
+            .shaped(ModItems.GROWTH_CHAMBER.get())
             .pattern("ama")
             .pattern("aba")
             .pattern("afa")
