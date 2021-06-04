@@ -229,6 +229,9 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     public void tick() {
         if (level == null || level.isClientSide()) return;
 
+        // try to auto extract every 20 ticks (1 second)
+        if (level.getGameTime() % 20 == 0) autoExport();
+
         // get the recipe for the current input
         R recipe = getRecipe();
         if (recipe != null) {
