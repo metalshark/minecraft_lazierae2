@@ -53,7 +53,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     private ItemStack currentStack = ItemStack.EMPTY;
     private float progress;
     private int effectiveProcessTime;
-    protected final IIntArray info = new IIntArray() {
+    protected final IIntArray info = new IIntArrayIO() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -112,12 +112,8 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             return ProcessorTile.INFO_SIZE;
         }
 
-        /**
-         * Returns the current io configuration for the passed in side.
-         * @param side the side to get the io configuration from
-         * @return the io configuration as int
-         */
-        int getIOSetting(IO_SIDE side) {
+        @Override
+        public int getIOSetting(IO_SIDE side) {
             if (sideConfig.size() == 0) return 0;
             return IOUtil.getIOSettingsMap().inverse().get(sideConfig.get(side));
         }
