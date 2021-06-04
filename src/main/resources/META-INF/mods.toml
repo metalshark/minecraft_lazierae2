@@ -8,7 +8,7 @@ issueTrackerURL="https://github.com/${github_user}/${github_repo}/issues"
     version="${mod_version}"
     displayName="${mod_name}"
     displayURL="https://github.com/${github_user}/${github_repo}"
-    credits="phantamanta44 for the original mod"
+    credits="phantamanta44 for the original mod, scooperlive & birb/crydigo for the texture overhauls"
     authors="${mod_authors}"
     description='''${mod_description}'''
 
