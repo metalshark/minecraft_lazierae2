@@ -19,6 +19,7 @@ public class ModItems {
     public static final RegistryObject<Item> FLUIX_IRON = simpleItem(FLUIX_IRON_ID);
     public static final RegistryObject<Item> FLUIX_STEEL = simpleItem(FLUIX_STEEL_ID);
     public static final RegistryObject<Item> LOGIC_UNIT = simpleItem(LOGIC_UNIT_ID);
+    public static final RegistryObject<Item> GROWTH_CHAMBER = simpleItem(GROWTH_CHAMBER_ID);
     public static final RegistryObject<Item> UNIVERSAL_PRESS = simpleItem(UNIVERSAL_PRESS_ID);
     public static final RegistryObject<Item> PARALLEL_PRINTED = simpleItem(PARALLEL_PRINTED_ID);
     public static final RegistryObject<Item> PARALLEL_PROCESSOR = simpleItem(PARALLEL_PROCESSOR_ID);

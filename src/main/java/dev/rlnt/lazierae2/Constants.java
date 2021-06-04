@@ -21,8 +21,6 @@ public final class Constants {
     public static final String COUNT = "count";
     // utility
     public static final String NETWORK = "network";
-    // block ids
-    public static final String GROWTH_CHAMBER_ID = "growth_chamber";
     // processor ids
     public static final String AGGREGATOR_ID = "fluix_aggregator";
     public static final String CENTRIFUGE_ID = "pulse_centrifuge";
@@ -35,6 +33,7 @@ public final class Constants {
     public static final String FLUIX_IRON_ID = "fluix_iron_ingot";
     public static final String FLUIX_STEEL_ID = "fluix_steel_ingot";
     public static final String LOGIC_UNIT_ID = "logic_unit";
+    public static final String GROWTH_CHAMBER_ID = "growth_chamber";
     public static final String UNIVERSAL_PRESS_ID = "universal_press";
     public static final String PARALLEL_PRINTED_ID = "parallel_printed";
     public static final String PARALLEL_PROCESSOR_ID = "parallel_processor";
