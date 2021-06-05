@@ -46,6 +46,9 @@ public class ModTags {
         public static final ITag.INamedTag<Item> PROCESSOR_PARALLEL = mod("processors/parallel");
         public static final ITag.INamedTag<Item> PROCESSOR_SPEC = mod("processors/speculative");
 
+        // Applied Energistics 2
+        public static final ITag.INamedTag<Item> SILICON = ItemTags.bind("forge:silicon");
+
         private Items() {
             throw new IllegalStateException(ModTags.UTILITY_CLASS);
         }

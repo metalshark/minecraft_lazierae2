@@ -108,7 +108,7 @@ public class Recipes extends RecipeProvider {
             .define('a', aeBlocks.quartzGrowthAccelerator().item())
             .define('m', aeBlocks.molecularAssembler().item())
             .define('b', Items.WATER_BUCKET.asItem())
-            .define('f', aeParts.cableGlass().item(AEColor.TRANSPARENT).asItem())
+            .define('f', aeParts.cableGlass().item(AEColor.TRANSPARENT))
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
@@ -135,7 +135,7 @@ public class Recipes extends RecipeProvider {
             .requires(aeMaterials.fluixDust().item(), 2)
             .requires(ModTags.Items.DUSTS_COAL)
             .requires(ModTags.Items.DUSTS_COAL)
-            .requires(aeMaterials.silicon())
+            .requires(ModTags.Items.SILICON)
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);
 
@@ -150,7 +150,7 @@ public class Recipes extends RecipeProvider {
         // speculation core x4
         ShapelessRecipeBuilder
             .shapeless(ModItems.SPEC_CORE_4.get())
-            .requires(aeMaterials.silicon().item())
+            .requires(ModTags.Items.SILICON)
             .requires(ModItems.SPEC_CORE_2.get(), 2)
             .unlockedBy(hasCondition, RecipeProvider.has(Items.COBBLESTONE))
             .save(consumer);

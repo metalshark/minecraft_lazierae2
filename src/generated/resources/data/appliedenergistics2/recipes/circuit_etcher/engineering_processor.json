@@ -17,7 +17,7 @@
     },
     {
       "input": {
-        "item": "appliedenergistics2:silicon"
+        "tag": "forge:silicon"
       }
     }
   ]
