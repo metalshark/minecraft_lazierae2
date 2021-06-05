@@ -110,6 +110,16 @@ and both on the bottom side.
 
 ---
 
+**Auto Extraction**
+
+![](images/extract.png)
+
+This button toggles the Auto Extraction of the processor.<br>
+When enabled, the processor will push the stack from the output slot to adjacent inventories if the corresponding
+side is configured as either `Output` or `I/O`.
+
+---
+
 **Upgrade Slot**
 
 ![](images/upgrade_empty.png)
