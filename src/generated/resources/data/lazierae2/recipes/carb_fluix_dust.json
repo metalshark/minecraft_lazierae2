@@ -14,7 +14,7 @@
       "tag": "forge:dusts/coal"
     },
     {
-      "item": "appliedenergistics2:silicon"
+      "tag": "forge:silicon"
     }
   ],
   "result": {

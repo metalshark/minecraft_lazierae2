@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "appliedenergistics2:silicon"
+      "tag": "forge:silicon"
     },
     {
       "item": "lazierae2:spec_core_2"
