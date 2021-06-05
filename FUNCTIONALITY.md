@@ -136,21 +136,3 @@ It will show you the current multipliers and changed values for the upgrade amou
 
 When breaking a processor, some information are saved to the item which is dropped.<br>
 There are tooltips to see which information was saved to identify the processor.
-
----
-
-**Automation**
-
-![](images/setup.png)
-
-Because there is no auto-extraction yet, you have to extract from the processors yourself.<br>
-If you want to automate a processor with the help of a ME-System, this is a good way to do it.
-
-The ME-Interface is connected to the system and adjacent to the processor you want to automate.<br>
-Then, an Import Bus is attached to the processor and connected to the Interface with a cable.
-
-It's really important that the cable with the Import Bus does not connect to your main system.<br>
-You can achieve that by using Quartz Fiber for example.
-
-If it's not working, make sure you have the I/O configuration properly adjusted to the setup and that
-the processor has energy.
