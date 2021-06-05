@@ -30,7 +30,7 @@ public class CentrifugeRecipe extends SingleRecipe {
     @Nonnull
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.CENTRIFUGE.get();
+        return ModRecipes.Serializers.CENTRIFUGE.get();
     }
 
     @Nonnull

@@ -22,7 +22,7 @@ public class Registration {
         ModTiles.TILES.register(modEventBus);
         ModContainers.CONTAINERS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-        ModRecipes.SERIALIZERS.register(modEventBus);
+        ModRecipes.Serializers.SERIALIZERS.register(modEventBus);
     }
 
     /**

@@ -2,7 +2,10 @@ package dev.rlnt.lazierae2.container.base;
 
 import dev.rlnt.lazierae2.inventory.base.AbstractItemHandler;
 import dev.rlnt.lazierae2.inventory.base.SingleItemHandler;
+import dev.rlnt.lazierae2.inventory.component.OutputSlot;
+import dev.rlnt.lazierae2.inventory.component.UpgradeSlot;
 import dev.rlnt.lazierae2.tile.base.ProcessorTile;
+import dev.rlnt.lazierae2.util.GameUtil;
 import dev.rlnt.lazierae2.util.IOUtil;
 import dev.rlnt.lazierae2.util.TypeEnums;
 import java.util.EnumMap;
@@ -14,6 +17,7 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIntArray;
+import net.minecraftforge.items.SlotItemHandler;
 
 public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends MachineContainer<T> implements IInfo {
 
@@ -32,6 +36,26 @@ public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends 
         syncInfo();
     }
 
+    @Override
+    protected void initContainerInventory() {
+        AbstractItemHandler itemHandler = tile.getItemHandler();
+
+        // upgrade slot
+        addSlot(new UpgradeSlot(itemHandler, ProcessorTile.SLOT_UPGRADE, 146, 62, tile));
+
+        if (itemHandler instanceof SingleItemHandler) {
+            // 1 input slot processors
+            // output slot
+            addSlot(new OutputSlot(itemHandler, ProcessorTile.SLOT_OUTPUT, 116, 35));
+            // input slot
+            addSlot(new SlotItemHandler(itemHandler, tile.getInputSlots()[0], 56, 35));
+        } else {
+            // 3 input slot processors
+            // output slot
+            addSlot(new OutputSlot(itemHandler, ProcessorTile.SLOT_OUTPUT, 120, 35));
+        }
+    }
+
     @Nonnull
     @Override
     public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
@@ -39,36 +63,37 @@ public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends 
         Slot slot = slots.get(index);
 
         // check if the slot exists and has an item inside
-        if (slot != null && slot.hasItem()) {
-            ItemStack slotStack = slot.getItem();
-            stack = slotStack.copy();
+        if (slot == null || !slot.hasItem()) return stack;
 
-            // decide where to put the item
-            if (tile.isWithinProcessorSlots(index)) {
-                if (!tryMergeToPlayerInventory(slotStack)) return ItemStack.EMPTY;
-            } else if (isValidForInput(slotStack)) {
-                if (!tryMergeToInput(slotStack)) return ItemStack.EMPTY;
-            } else if (ProcessorTile.isUpgrade(slotStack)) {
-                // check if the upgrade can be merged to the upgrade slot and merge
-                int mergeableUpgrades = getMergeableUpgrades();
-                if (mergeableUpgrades > 0) {
-                    tryMergeToUpgrade(slotStack, mergeableUpgrades);
-                } else {
-                    return ItemStack.EMPTY;
-                }
-            }
+        ItemStack slotStack = slot.getItem();
+        stack = slotStack.copy();
 
-            // check if something changed
-            if (slotStack.isEmpty()) {
-                slot.set(ItemStack.EMPTY);
+        // decide where to put the item
+        if (tile.isWithinProcessorSlots(index)) {
+            if (!tryMergeToPlayerInventory(slotStack)) return ItemStack.EMPTY;
+        } else if (isValidForInput(slotStack)) {
+            if (!tryMergeToInput(slotStack)) return ItemStack.EMPTY;
+        } else if (GameUtil.isUpgrade(slotStack)) {
+            // check if the upgrade can be merged to the upgrade slot and merge
+            int mergeableUpgrades = getMergeableUpgrades();
+            if (mergeableUpgrades > 0) {
+                tryMergeToUpgrade(slotStack, mergeableUpgrades);
             } else {
-                // call this so the tile entity is marked as changed and saved
-                slot.setChanged();
+                return ItemStack.EMPTY;
             }
-
-            if (slotStack.getCount() == stack.getCount()) return ItemStack.EMPTY;
-            slot.onTake(playerIn, slotStack);
         }
+
+        // check if something changed
+        if (slotStack.isEmpty()) {
+            slot.set(ItemStack.EMPTY);
+        } else {
+            // call this so the tile entity is marked as changed and saved
+            slot.setChanged();
+        }
+
+        if (slotStack.getCount() == stack.getCount()) return ItemStack.EMPTY;
+        slot.onTake(playerIn, slotStack);
+
         return stack;
     }
 
@@ -186,6 +211,11 @@ public abstract class ProcessorContainer<T extends ProcessorTile<?, ?>> extends 
         return (EnumMap<TypeEnums.IO_SIDE, TypeEnums.IO_SETTING>) IOUtil.getSideConfigFromArray(
             new int[] { info.get(7), info.get(8), info.get(9), info.get(10), info.get(11), info.get(12) }
         );
+    }
+
+    @Override
+    public boolean isAutoExtracting() {
+        return info.get(13) == 1;
     }
 
     @Override

@@ -32,7 +32,7 @@ public class EtcherRecipe extends MultiRecipe {
     @Nonnull
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.ETCHER.get();
+        return ModRecipes.Serializers.ETCHER.get();
     }
 
     @Nonnull

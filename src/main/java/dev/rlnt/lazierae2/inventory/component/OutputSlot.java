@@ -1,4 +1,4 @@
-package dev.rlnt.lazierae2.inventory;
+package dev.rlnt.lazierae2.inventory.component;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

@@ -2,6 +2,7 @@ package dev.rlnt.lazierae2.inventory.base;
 
 import dev.rlnt.lazierae2.setup.ModConfig;
 import dev.rlnt.lazierae2.tile.base.ProcessorTile;
+import dev.rlnt.lazierae2.util.GameUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -28,7 +29,7 @@ public abstract class AbstractItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-        if (slot == ProcessorTile.SLOT_UPGRADE) return ProcessorTile.isUpgrade(stack);
+        if (slot == ProcessorTile.SLOT_UPGRADE) return GameUtil.isUpgrade(stack);
         return super.isItemValid(slot, stack);
     }
 

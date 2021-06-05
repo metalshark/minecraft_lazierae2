@@ -23,13 +23,20 @@ You can change the I/O configuration by clicking the buttons in the upper right 
 It will cycle through all 4 modes `None`, `Input`, `Output` and `I/O` (both) but you can always quickly reset the
 side by shift-clicking the button for it.
 
+### **Auto Extraction**
+Each processor is able to automatically extract its outputs to adjacent inventories.
+
+Once you configured your I/O settings, you can activate Auto Extraction and the machine will automatically start to send
+items in the output slot to adjacent inventories.<br>
+Keep in mind that this only works if the correct side is either configured as `Output` or `I/O`.
+
 ### **Saved Values**
 When breaking a processor, all items inside the input slots and the output slot will be dropped.<br>
-The energy, however, is stored as well as the upgrades and the I/O configuration.
+The energy, however, is stored as well as the upgrades, the I/O configuration and the automatic extraction status.
 
 A processor item with these saved values is not able to form a stack with another processor of the same type.<br>
-In order to make them stackable again, place the processor, remove the upgrades, reset the I/O configuration and click the
-`Dump` button to empty the energy buffer.
+In order to make them stackable again, place the processor, remove the upgrades, reset the I/O configuration, disable automatic
+extraction and click the `Dump` button to empty the energy buffer.
 
 ### **Extended Information**
 When a tooltip has the line `Press Shift for more details`, you will be able to either see more information which takes up much space
@@ -129,21 +136,3 @@ It will show you the current multipliers and changed values for the upgrade amou
 
 When breaking a processor, some information are saved to the item which is dropped.<br>
 There are tooltips to see which information was saved to identify the processor.
-
----
-
-**Automation**
-
-![](images/setup.png)
-
-Because there is no auto-extraction yet, you have to extract from the processors yourself.<br>
-If you want to automate a processor with the help of a ME-System, this is a good way to do it.
-
-The ME-Interface is connected to the system and adjacent to the processor you want to automate.<br>
-Then, an Import Bus is attached to the processor and connected to the Interface with a cable.
-
-It's really important that the cable with the Import Bus does not connect to your main system.<br>
-You can achieve that by using Quartz Fiber for example.
-
-If it's not working, make sure you have the I/O configuration properly adjusted to the setup and that
-the processor has energy.

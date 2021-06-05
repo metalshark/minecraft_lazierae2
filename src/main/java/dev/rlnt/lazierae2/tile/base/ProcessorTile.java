@@ -2,7 +2,6 @@ package dev.rlnt.lazierae2.tile.base;
 
 import static dev.rlnt.lazierae2.Constants.*;
 
-import appeng.core.Api;
 import dev.rlnt.lazierae2.block.base.ProcessorBlock;
 import dev.rlnt.lazierae2.inventory.base.AbstractItemHandler;
 import dev.rlnt.lazierae2.inventory.base.MultiItemHandler;
@@ -19,6 +18,7 @@ import dev.rlnt.lazierae2.util.TypeEnums.TRANSLATE_TYPE;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.block.BlockState;
@@ -26,17 +26,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -44,17 +48,19 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
 
     public static final int SLOT_UPGRADE = 0;
     public static final int SLOT_OUTPUT = 1;
-    public static final int INFO_SIZE = 13;
+    public static final int INFO_SIZE = 14;
     private final int[] inputSlots;
     private final String id;
     private final AbstractEnergyStorage energyStorage;
     private final LazyOptional<EnergyStorage> energyStorageCap;
     private final LazyOptional<IItemHandlerModifiable>[] sidedInvWrapper;
+    private final EnumMap<Direction, LazyOptional<IItemHandler>> cache = new EnumMap<>(Direction.class);
+    private boolean autoExtract = false;
     private EnumMap<IO_SIDE, IO_SETTING> sideConfig = new EnumMap<>(IO_SIDE.class);
     private ItemStack currentStack = ItemStack.EMPTY;
     private float progress;
     private int effectiveProcessTime;
-    protected final IIntArray info = new IIntArray() {
+    protected final IIntArray info = new IIntArrayIO() {
         @Override
         public int get(int index) {
             switch (index) {
@@ -95,6 +101,9 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
                 case 12:
                     // back side io config
                     return getIOSetting(IO_SIDE.BACK);
+                case 13:
+                    // auto extraction
+                    return autoExtract ? 1 : 0;
                 default:
                     return 0;
             }
@@ -113,12 +122,8 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             return ProcessorTile.INFO_SIZE;
         }
 
-        /**
-         * Returns the current io configuration for the passed in side.
-         * @param side the side to get the io configuration from
-         * @return the io configuration as int
-         */
-        int getIOSetting(IO_SIDE side) {
+        @Override
+        public int getIOSetting(IO_SIDE side) {
             if (sideConfig.size() == 0) return 0;
             return IOUtil.getIOSettingsMap().inverse().get(sideConfig.get(side));
         }
@@ -150,15 +155,6 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             );
     }
 
-    /**
-     * Checks if the item is a valid processor upgrade.
-     * @param stack the ItemStack to check
-     * @return true if the item is a valid processor upgrade, false otherwise
-     */
-    public static boolean isUpgrade(ItemStack stack) {
-        return stack.getItem() == Api.instance().definitions().materials().cardSpeed().item();
-    }
-
     @Override
     public ITextComponent getDisplayName() {
         return TextUtil.translate(TRANSLATE_TYPE.CONTAINER, id);
@@ -174,6 +170,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         currentStack = ItemStack.of(nbt.getCompound(STACK_CURRENT));
         finishedStack = ItemStack.of(nbt.getCompound(STACK_OUTPUT));
         sideConfig = (EnumMap<IO_SIDE, IO_SETTING>) IOUtil.getSideConfigFromArray(nbt.getIntArray(IO_CONFIG));
+        autoExtract = nbt.getBoolean(AUTO_EXTRACT);
         refreshEnergyCapacity();
     }
 
@@ -187,6 +184,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         nbt.put(STACK_CURRENT, currentStack.save(new CompoundNBT()));
         nbt.put(STACK_OUTPUT, finishedStack.save(new CompoundNBT()));
         nbt.putIntArray(IO_CONFIG, IOUtil.serializeSideConfig(sideConfig));
+        nbt.putBoolean(AUTO_EXTRACT, autoExtract);
         return super.save(nbt);
     }
 
@@ -236,6 +234,9 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     @Override
     public void tick() {
         if (level == null || level.isClientSide()) return;
+
+        // try to auto extract every 20 ticks (1 second)
+        if (autoExtract && level.getGameTime() % 20 == 0) autoExport();
 
         // get the recipe for the current input
         R recipe = getRecipe();
@@ -437,6 +438,102 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
         stopWork();
     }
 
+    private void autoExport() {
+        // level can't be null here because it's called from tick()
+        assert level != null;
+
+        // only try to export if the output slot has an item
+        if (itemHandler.getStackInSlot(SLOT_OUTPUT).isEmpty()) return;
+
+        Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+        EnumMap<Direction, TileEntity> outputInventories = new EnumMap<>(Direction.class);
+
+        // fill the adjacent inventory map with possible output inventories
+        sideConfig.forEach(
+            (side, setting) -> {
+                // only check sides which are actually set to be able to output
+                if (setting != IO_SETTING.OUTPUT && setting != IO_SETTING.IO) return;
+                // decide the direction depending on the IO side
+                Direction direction = getDirection(facing, side);
+                // add the adjacent inventory on the current side to the map
+                outputInventories.put(direction, level.getBlockEntity(worldPosition.relative(direction, 1)));
+            }
+        );
+
+        // iterate over all possible output inventories and try to push the output items
+        for (Map.Entry<Direction, TileEntity> entry : outputInventories.entrySet()) {
+            // try to load capability from cache
+            LazyOptional<IItemHandler> target = cache.get(entry.getKey());
+
+            // if cached capability was invalidated or wasn't filled yet, cache the current one
+            if (target == null) {
+                ICapabilityProvider provider = entry.getValue();
+                if (provider == null) continue;
+                target =
+                    provider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, entry.getKey().getOpposite());
+                cache.put(entry.getKey(), target);
+                target.addListener(self -> cache.put(entry.getKey(), null));
+            }
+
+            // defines if the loop should stop after the next inventory because the export items are empty
+            AtomicBoolean shouldBreak = new AtomicBoolean(false);
+
+            // if the target inventory has a valid inventory capability
+            target.ifPresent(
+                targetInventory -> {
+                    // try to export everything in the output slot to the inventory
+                    ItemStack toExport = itemHandler.getStackInSlot(SLOT_OUTPUT);
+                    ItemStack remaining = ItemHandlerHelper.insertItemStacked(targetInventory, toExport, false);
+                    // mark the tile entity as changed when something was exported
+                    if (remaining.getCount() != toExport.getCount() || !remaining.sameItem(toExport)) {
+                        // set the stack in the output slot to the remaining stack
+                        itemHandler.setStackInSlot(SLOT_OUTPUT, remaining);
+                        setChanged();
+                    }
+                    // break the loop for other output inventories if nothing is left to export
+                    if (remaining.isEmpty()) {
+                        shouldBreak.set(true);
+                    }
+                }
+            );
+
+            if (shouldBreak.get()) return;
+        }
+    }
+
+    /**
+     * Gets the direction for finding the adjacent inventory for the auto extract.
+     * @param facing the direction the processor is currently facing
+     * @param side the io side to get the direction for
+     * @return the direction of the passed in io side
+     */
+    private Direction getDirection(Direction facing, IO_SIDE side) {
+        Direction direction;
+        switch (side) {
+            case TOP:
+                direction = Direction.UP;
+                break;
+            case LEFT:
+                direction = facing.getClockWise();
+                break;
+            case FRONT:
+                direction = facing;
+                break;
+            case RIGHT:
+                direction = facing.getCounterClockWise();
+                break;
+            case BOTTOM:
+                direction = Direction.DOWN;
+                break;
+            case BACK:
+                direction = facing.getOpposite();
+                break;
+            default:
+                throw new IllegalArgumentException("No side found called " + side);
+        }
+        return direction;
+    }
+
     /**
      * Refreshes the current energy capacity by calculating
      * the new capacity from the upgrade amount.
@@ -513,6 +610,7 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
             itemHandler.getStackInSlot(SLOT_UPGRADE).save(new CompoundNBT())
         );
         if (IOUtil.isChanged(sideConfig)) nbt.putIntArray(IO_CONFIG, IOUtil.serializeSideConfig(sideConfig));
+        if (autoExtract) nbt.putBoolean(AUTO_EXTRACT, true);
         ItemStack stack = new ItemStack(getItemProvider());
         if (!nbt.isEmpty()) stack.setTag(nbt);
         return stack;
@@ -526,6 +624,10 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
     private void setProgress(float progress) {
         this.progress = progress;
         setChanged();
+    }
+
+    public void toggleAutoExtract() {
+        autoExtract = !autoExtract;
     }
 
     public int[] getInputSlots() {
