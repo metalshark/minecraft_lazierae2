@@ -74,7 +74,7 @@ Everything related to versions and their release notes can be found in the [chan
 
 
 ## **🎓 License**
-This project is licensed under the [GNU GPL v3.0][license] license.
+This project is licensed under the [MIT][license] license.
 
 
 <!-- Links -->
