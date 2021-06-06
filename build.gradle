@@ -167,7 +167,7 @@ dependencies {
     compile fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:${crt_version}")
 
     // dev dependencies - get these from cursemaven
-    runtimeOnly fg.deobf("curse.maven:jei-238222:3335737") // JEI - 7.7.0.103
+    runtimeOnly fg.deobf("curse.maven:jei-238222:3338427") // JEI - 7.7.0.104
     runtimeOnly fg.deobf("curse.maven:top-245211:3319255") // TOP - 3.1.4
     runtimeOnly fg.deobf("curse.maven:solargen-336538:3177119") // SolarGeneration - 2.4.0
 }

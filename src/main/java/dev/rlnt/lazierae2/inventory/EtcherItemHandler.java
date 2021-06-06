@@ -14,8 +14,10 @@ public class EtcherItemHandler extends MultiItemHandler {
 
     public EtcherItemHandler(int size, ProcessorTile<?, ?> tile) {
         super(size, tile);
-        recipes = GameUtil.getRecipeManager(tile.getLevel()).getAllRecipesFor(ModRecipes.Types.ETCHER);
-        fillValids();
+        if (tile.hasLevel() && tile.getLevel() != null && !tile.getLevel().isClientSide()) {
+            recipes = GameUtil.getRecipeManager(tile.getLevel()).getAllRecipesFor(ModRecipes.Types.ETCHER);
+            fillValids();
+        }
     }
 
     @Override
