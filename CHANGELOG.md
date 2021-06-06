@@ -10,6 +10,16 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 
 ## [Released]
 
+## [1.1.2] - 2021-06-06
+
+### Fixed
+- Fluix Aggregator and Circuit Etcher crashing clients on server ([#7])
+- JEI mod plugin not working when playing on a server ([#7])
+
+<!-- Links -->
+[#7]: https://github.com/RLNT/minecraft_lazierae2/issues/7
+
+
 ## [1.1.1] - 2021-06-05
 
 ### Fixed
@@ -51,8 +61,9 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 [semantic versioning]: https://semver.org/
 
 <!-- Versions -->
-[unreleased]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.0.0...HEAD
 [released]: https://github.com/RLNT/minecraft_lazierae2/releases
-[1.1.1]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.1.0..v1.1.1
-[1.1.0]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.0.0..v1.1.0
-[1.0.0]: https://github.com/RLNT/minecraft_lazierae2/releases/v1.0.0
+[1.1.2]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.1..v1.16-1.1.2
+[1.1.1]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.0..v1.16-1.1.1
+[1.1.0]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.0.0..v1.16-1.1.0
+[1.0.0]: https://github.com/RLNT/minecraft_lazierae2/releases/v1.16-1.0.0
