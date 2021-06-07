@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class GameUtil {
 
@@ -22,8 +23,12 @@ public class GameUtil {
      */
     public static RecipeManager getRecipeManager(@Nullable World world) {
         if (world != null && world.getServer() != null) return world.getServer().getRecipeManager();
-        assert Minecraft.getInstance().level != null;
-        return Minecraft.getInstance().level.getRecipeManager();
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            return ServerLifecycleHooks.getCurrentServer().getRecipeManager();
+        } else {
+            assert Minecraft.getInstance().level != null;
+            return Minecraft.getInstance().level.getRecipeManager();
+        }
     }
 
     /**
