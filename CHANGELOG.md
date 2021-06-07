@@ -72,6 +72,7 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 <!-- Versions -->
 [unreleased]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.0.0...HEAD
 [released]: https://github.com/RLNT/minecraft_lazierae2/releases
+[1.1.3]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.2..v1.16-1.1.3
 [1.1.2]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.1..v1.16-1.1.2
 [1.1.1]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.0..v1.16-1.1.1
 [1.1.0]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.0.0..v1.16-1.1.0
