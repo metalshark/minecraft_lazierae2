@@ -10,6 +10,15 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 
 ## [Released]
 
+## [1.1.3] - 2021-06-07
+
+### Fixed
+- retrieving RecipeManager on server instance ([#8])
+
+<!-- Links -->
+[#8]: https://github.com/RLNT/minecraft_lazierae2/issues/8
+
+
 ## [1.1.2] - 2021-06-06
 
 ### Fixed

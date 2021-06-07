@@ -14,10 +14,8 @@ public class AggregatorItemHandler extends MultiItemHandler {
 
     public AggregatorItemHandler(int size, ProcessorTile<?, ?> tile) {
         super(size, tile);
-        if (tile.hasLevel() && tile.getLevel() != null && !tile.getLevel().isClientSide()) {
-            recipes = GameUtil.getRecipeManager(tile.getLevel()).getAllRecipesFor(ModRecipes.Types.AGGREGATOR);
-            fillValids();
-        }
+        recipes = GameUtil.getRecipeManager(tile.getLevel()).getAllRecipesFor(ModRecipes.Types.AGGREGATOR);
+        fillValids();
     }
 
     @Override
