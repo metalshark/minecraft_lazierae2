@@ -63,7 +63,8 @@ The mod has native support for it, so there are some functions you can use.
 This mod has no custom plugin for [KubeJS] but you can always use the `event.custom()` function inside the recipe event to add new recipes.<br>
 Either you always pass in the whole recipe object or you write yourself a small wrapper for that.
 
-Existing recipes you can adapt the style from are [here][recipes].
+Existing recipes you can adapt the style from are [here][recipes].<br>
+A place were the usage of [KubeJS] can be seen is [here][usage].
 
 **Fluix Aggregator**
 ```js
@@ -153,3 +154,4 @@ event.custom({
 [crafttweaker]: https://www.curseforge.com/minecraft/mc-mods/crafttweaker
 [kubejs]: https://www.curseforge.com/minecraft/mc-mods/kubejs-forge
 [recipes]: https://github.com/RLNT/minecraft_lazierae2/blob-1.16/src/generated/resources/data/lazierae2/recipes
+[usage]: https://github.com/AllTheMods/ATM-6/pull/1757/files

@@ -4,7 +4,14 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 
 ## [Unreleased]
 
-- /
+### Added
+- German translation
+- Russian translation [@MuTBu] ([#11], [#12])
+
+<!-- Links -->
+[@MuTBu]: https://github.com/MuTBu
+[#11]: https://github.com/RLNT/minecraft_lazierae2/issues/11
+[#12]: https://github.com/RLNT/minecraft_lazierae2/issues/12
 
 ---
 
