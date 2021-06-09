@@ -66,7 +66,8 @@ Since a lot of stuff changed in modern versions of [Minecraft] since 1.12, it's 
 Credits for the original mod and the idea behind it of course go to [phantamanta44][author].<br>
 Most of the textures were taken from the original mod.
 
-Texture overhauls have been done by us, [scooperlive][artist1] and [birb/crydigo][artist2].
+Texture overhauls have been done by us, [scooperlive][artist1] and [birb/crydigo][artist2].<br>
+Further credits of course go to our [contributors].
 
 
 ## **⏰ Changelog**
@@ -92,6 +93,7 @@ This project is licensed under the [MIT][license] license.
 [author]: https://github.com/phantamanta44
 [artist1]: https://www.curseforge.com/members/scooperlive/
 [artist2]: https://www.reddit.com/user/crydigo/
+[contributors]: https://github.com/RLNT/minecraft_lazierae2/graphs/contributors
 [issues]: https://github.com/RLNT/minecraft_lazierae2/issues
 [changelog]: CHANGELOG.md
 [license]: LICENSE
