@@ -32,8 +32,7 @@
   "container.lazierae2.circuit_etcher": "Schaltkreisätzer",
 
   "tooltip.lazierae2.shift_details_1": "Halte",
-  "tooltip.lazierae2.shift_details_2": "Shift",
-  "tooltip.lazierae2.shift_details_3": "für mehr Details",
+  "tooltip.lazierae2.shift_details_2": "für mehr Details",
   "tooltip.lazierae2.energy_buffer": "Energiepuffer",
   "tooltip.lazierae2.energy_stored": "Kapazität:",
   "tooltip.lazierae2.energy_rate": "Verbrauch:",
