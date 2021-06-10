@@ -17,6 +17,7 @@ import dev.rlnt.lazierae2.util.TypeEnums.PROGRESS_BAR_TYPE;
 import dev.rlnt.lazierae2.util.TypeEnums.TRANSLATE_TYPE;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -47,9 +48,14 @@ public abstract class ProcessorScreen<C extends ProcessorContainer<?>> extends M
         return (TranslationTextComponent) TextUtil
             .translate(TRANSLATE_TYPE.TOOLTIP, "shift_details_1", TextFormatting.GRAY)
             .append(" ")
-            .append(TextUtil.translate(TRANSLATE_TYPE.TOOLTIP, "shift_details_2", TextFormatting.AQUA))
+            .append(
+                TextUtil.colorize(
+                    InputMappings.getKey("key.keyboard.left.shift").getDisplayName().getString(),
+                    TextFormatting.AQUA
+                )
+            )
             .append(" ")
-            .append(TextUtil.translate(TRANSLATE_TYPE.TOOLTIP, "shift_details_3", TextFormatting.GRAY));
+            .append(TextUtil.translate(TRANSLATE_TYPE.TOOLTIP, "shift_details_2", TextFormatting.GRAY));
     }
 
     @Override

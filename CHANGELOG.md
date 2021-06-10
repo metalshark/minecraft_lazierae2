@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 ## [Unreleased]
 
 ### Added
+- localized Shift key directly from Minecraft translations
 - German translation
 - Russian translation [@MuTBu] ([#11], [#12])
 
