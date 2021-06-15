@@ -3,20 +3,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog][keep a changelog] and this project adheres to [Semantic Versioning][semantic versioning].
 
 ## [Unreleased]
+- /
+
+---
+
+## [Released]
+
+## [1.1.4] - 2021-06-15
 
 ### Added
 - localized Shift key directly from Minecraft translations
 - German translation
 - Russian translation [@MuTBu] ([#11], [#12])
 
+### Fixed
+- possible division by 0 when inserting Acceleration Upgrades ([#13], [ATM6/#1815])
+
 <!-- Links -->
 [@MuTBu]: https://github.com/MuTBu
 [#11]: https://github.com/RLNT/minecraft_lazierae2/issues/11
 [#12]: https://github.com/RLNT/minecraft_lazierae2/issues/12
+[#13]: https://github.com/RLNT/minecraft_lazierae2/issues/13
+[ATM6/#1815]: https://github.com/AllTheMods/ATM-6/issues/1815
 
----
-
-## [Released]
 
 ## [1.1.3] - 2021-06-07
 
@@ -80,6 +89,7 @@ The format is based on [Keep a Changelog][keep a changelog] and this project adh
 <!-- Versions -->
 [unreleased]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.0.0...HEAD
 [released]: https://github.com/RLNT/minecraft_lazierae2/releases
+[1.1.4]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.3..v1.16-1.1.4
 [1.1.3]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.2..v1.16-1.1.3
 [1.1.2]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.1..v1.16-1.1.2
 [1.1.1]: https://github.com/RLNT/minecraft_lazierae2/compare/v1.16-1.1.0..v1.16-1.1.1
