@@ -241,9 +241,9 @@ public abstract class ProcessorScreen<C extends ProcessorContainer<?>> extends M
     ) {
         if (!menu.isProcessing()) return;
         int offsetU = PROGRESS_BAR_OFFSET_U;
-        int progress = (int) menu.getProgress();
-        int processTime = menu.getEffectiveProcessTime();
-        int length;
+        float progress = menu.getProgress();
+        float processTime = menu.getEffectiveProcessTime();
+        float length;
 
         switch (type) {
             case PRIMARY:
@@ -259,7 +259,7 @@ public abstract class ProcessorScreen<C extends ProcessorContainer<?>> extends M
         }
         length++;
 
-        draw(matrix, posX, posY, offsetU, MathHelper.clamp(length, 0, width), height);
+        draw(matrix, posX, posY, offsetU, MathHelper.clamp((int) length, 0, width), height);
     }
 
     /**
