@@ -582,6 +582,8 @@ public abstract class ProcessorTile<I extends AbstractItemHandler, R extends Abs
      */
     private int[] getSlotsForIOSide(IO_SIDE side) {
         IO_SETTING setting = sideConfig.get(side);
+        if (setting == null)
+            return new int[] {};
         switch (setting) {
             case NONE:
                 return new int[] {};
